@@ -31,14 +31,14 @@ function RectangularMeter({
   return (
     <div className="sx-cell p-3 flex flex-col gap-1.5">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-semibold text-[#cbd5e1]">{label}</span>
-        <span className="font-mono font-semibold text-[#f8fafc]">{valueText}</span>
+        <span className="font-semibold text-[#1e293b]">{label}</span>
+        <span className="font-mono font-semibold text-[#0f172a]">{valueText}</span>
       </div>
-      <div className="grid grid-cols-10 gap-1 p-1 bg-[#06080d] border border-[#1d2636]">
+      <div className="grid grid-cols-10 gap-1 p-1 bg-[#dce5f0] border border-[#9cb0c9]">
         {Array.from({ length: blocks }).map((_, i) => (
           <div
             key={i}
-            className={`h-2.5 ${i < active ? colorClass : 'bg-[#161e2b]'}`}
+            className={`h-2.5 ${i < active ? colorClass : 'bg-[#cbd5e1]'}`}
           />
         ))}
       </div>
@@ -206,11 +206,11 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
       {/* Daily Targets Summary Bar */}
       <div className="sx-panel overflow-hidden">
         <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-          <h1 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-2">
-            <ClipboardList className="w-4 h-4 text-[#38bdf8]" />
+          <h1 className="text-xs font-semibold tracking-wide text-white flex items-center gap-2">
+            <ClipboardList className="w-4 h-4 text-[#93c5fd]" />
             <span>Crew Daily Countermeasure Logbook: Diet, Exercise &amp; Mental Health</span>
           </h1>
-          <span className="text-[11px] font-mono text-[#38bdf8]">
+          <span className="text-[11px] font-mono text-[#dbeafe]">
             SQLite Persistent · Atrophy Risk {snapshot.muscle_atrophy_risk.toFixed(3)}x
           </span>
         </div>
@@ -220,38 +220,38 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
             label="Daily Energy Intake"
             valueText={`${summary.total_calories_kcal} / 2800 kcal`}
             percent={(summary.total_calories_kcal / 2800) * 100}
-            colorClass="bg-[#38bdf8]"
+            colorClass="bg-[#0b3d91]"
           />
           <RectangularMeter
             label="Fluid Hydration"
             valueText={`${summary.total_water_ml} / 2500 mL`}
             percent={(summary.total_water_ml / 2500) * 100}
-            colorClass="bg-[#0ea5e9]"
+            colorClass="bg-[#1d4ed8]"
           />
           <RectangularMeter
             label="NASA Exercise Target"
             valueText={`${summary.total_exercise_min} / 90 min`}
             percent={(summary.total_exercise_min / 90) * 100}
-            colorClass="bg-[#34d399]"
+            colorClass="bg-[#15803d]"
           />
           <RectangularMeter
             label="Protein & Behavioral"
             valueText={`${summary.total_protein_g}g · ${summary.mental_logs_count} logs`}
             percent={(summary.total_protein_g / 110) * 100}
-            colorClass="bg-[#f59e0b]"
+            colorClass="bg-[#d97706]"
           />
         </div>
       </div>
 
       {/* Category Switcher Tabs + Entry Form */}
       <div className="sx-panel overflow-hidden">
-        <div className="flex flex-wrap items-center gap-1.5 px-4 py-2.5 border-b border-[#1d2636] bg-[#0b1018]">
+        <div className="flex flex-wrap items-center gap-1.5 px-4 py-2.5 border-b border-[#b6c6d8] bg-[#dce5f0]">
           <button
             type="button"
             onClick={() => setActiveTab('diet')}
             className={`px-3 py-1.5 text-xs font-semibold border flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'diet'
-                ? 'bg-[#0a1c2e] text-[#38bdf8] border-[#38bdf8]'
+                ? 'bg-[#0b3d91] text-white border-[#fc3d21]'
                 : 'sx-btn'
             }`}
           >
@@ -264,7 +264,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
             onClick={() => setActiveTab('exercise')}
             className={`px-3 py-1.5 text-xs font-semibold border flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'exercise'
-                ? 'bg-[#0a1c2e] text-[#38bdf8] border-[#38bdf8]'
+                ? 'bg-[#0b3d91] text-white border-[#fc3d21]'
                 : 'sx-btn'
             }`}
           >
@@ -277,7 +277,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
             onClick={() => setActiveTab('mental')}
             className={`px-3 py-1.5 text-xs font-semibold border flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'mental'
-                ? 'bg-[#0a1c2e] text-[#38bdf8] border-[#38bdf8]'
+                ? 'bg-[#0b3d91] text-white border-[#fc3d21]'
                 : 'sx-btn'
             }`}
           >
@@ -288,7 +288,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
 
         <div className="p-4 flex flex-col gap-3 text-xs">
           {statusMsg && (
-            <div className="p-2.5 bg-[#071f14] border border-[#15803d] text-[#34d399] font-mono text-[11px]">
+            <div className="p-2.5 bg-[#ecfdf5] border border-[#16a34a] text-[#15803d] font-mono text-[11px]">
               {statusMsg}
             </div>
           )}
@@ -296,7 +296,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
           {activeTab === 'diet' && (
             <form onSubmit={submitDiet} className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="font-mono text-[11px] text-[#94a3b8] mr-1">Quick Presets:</span>
+                <span className="font-mono text-[11px] text-[#475569] mr-1">Quick Presets:</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -343,7 +343,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Meal / Intake Category</span>
+                  <span className="font-semibold text-[#1e293b]">Meal / Intake Category</span>
                   <select
                     value={mealType}
                     onChange={(e) => setMealType(e.target.value)}
@@ -358,7 +358,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                 </label>
 
                 <label className="flex flex-col gap-1 md:col-span-2">
-                  <span className="font-semibold text-[#cbd5e1]">Ration Description &amp; Supplements</span>
+                  <span className="font-semibold text-[#1e293b]">Ration Description &amp; Supplements</span>
                   <input
                     type="text"
                     value={foodDesc}
@@ -370,7 +370,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Energy (kcal)</span>
+                  <span className="font-semibold text-[#1e293b]">Energy (kcal)</span>
                   <input
                     type="number"
                     min={0}
@@ -381,7 +381,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                   />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Protein (g)</span>
+                  <span className="font-semibold text-[#1e293b]">Protein (g)</span>
                   <input
                     type="number"
                     min={0}
@@ -392,7 +392,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                   />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Water (mL)</span>
+                  <span className="font-semibold text-[#1e293b]">Water (mL)</span>
                   <input
                     type="number"
                     min={0}
@@ -403,7 +403,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                   />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Vitamin D (IU)</span>
+                  <span className="font-semibold text-[#1e293b]">Vitamin D (IU)</span>
                   <input
                     type="number"
                     min={0}
@@ -429,13 +429,13 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
 
           {activeTab === 'exercise' && (
             <form onSubmit={submitExercise} className="flex flex-col gap-3">
-              <p className="text-[#cbd5e1] sx-cell p-2.5">
-                <strong className="text-[#38bdf8]">NASA Bone &amp; Muscle Countermeasure:</strong> Astronauts perform resistive loading (ARED) and aerobic exercise daily to offset microgravity muscle atrophy (OSD-195 baseline {snapshot.genetic_atrophy_baseline.toFixed(2)}x). Logging exercise dynamically reduces your live atrophy risk score in Python.
+              <p className="text-[#334155] sx-cell p-2.5">
+                <strong className="text-[#0b3d91]">NASA Bone &amp; Muscle Countermeasure:</strong> Astronauts perform resistive loading (ARED) and aerobic exercise daily to offset microgravity muscle atrophy (OSD-195 baseline {snapshot.genetic_atrophy_baseline.toFixed(2)}x). Logging exercise dynamically reduces your live atrophy risk score in Python.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Hardware Modality</span>
+                  <span className="font-semibold text-[#1e293b]">Hardware Modality</span>
                   <select
                     value={modality}
                     onChange={(e) => setModality(e.target.value)}
@@ -450,7 +450,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                 </label>
 
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Duration (minutes)</span>
+                  <span className="font-semibold text-[#1e293b]">Duration (minutes)</span>
                   <input
                     type="number"
                     min={1}
@@ -462,7 +462,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                 </label>
 
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Intensity Tier</span>
+                  <span className="font-semibold text-[#1e293b]">Intensity Tier</span>
                   <select
                     value={intensity}
                     onChange={(e) => setIntensity(e.target.value as 'LOW' | 'MODERATE' | 'HIGH')}
@@ -477,7 +477,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">ARED / Resistance Load ({loadPct}%)</span>
+                  <span className="font-semibold text-[#1e293b]">ARED / Resistance Load ({loadPct}%)</span>
                   <input
                     type="range"
                     min={0}
@@ -490,7 +490,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                 </label>
 
                 <label className="flex flex-col gap-1 md:col-span-2">
-                  <span className="font-semibold text-[#cbd5e1]">Session Notes / Joint Feedback</span>
+                  <span className="font-semibold text-[#1e293b]">Session Notes / Joint Feedback</span>
                   <input
                     type="text"
                     value={exNotes}
@@ -517,7 +517,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
             <form onSubmit={submitMental} className="flex flex-col gap-3">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Mood Score ({moodScore} / 5)</span>
+                  <span className="font-semibold text-[#1e293b]">Mood Score ({moodScore} / 5)</span>
                   <input
                     type="range"
                     min={1}
@@ -530,7 +530,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                 </label>
 
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Perceived Stress ({stressLevel} / 10)</span>
+                  <span className="font-semibold text-[#1e293b]">Perceived Stress ({stressLevel} / 10)</span>
                   <input
                     type="range"
                     min={1}
@@ -543,7 +543,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                 </label>
 
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Last Sleep Duration (hrs)</span>
+                  <span className="font-semibold text-[#1e293b]">Last Sleep Duration (hrs)</span>
                   <input
                     type="number"
                     min={0}
@@ -558,7 +558,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <label className="flex flex-col gap-1">
-                  <span className="font-semibold text-[#cbd5e1]">Primary Behavioral Context / Stressor</span>
+                  <span className="font-semibold text-[#1e293b]">Primary Behavioral Context / Stressor</span>
                   <select
                     value={triggers}
                     onChange={(e) => setTriggers(e.target.value)}
@@ -573,7 +573,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
                 </label>
 
                 <label className="flex flex-col gap-1 md:col-span-2">
-                  <span className="font-semibold text-[#cbd5e1]">Crew Mental Health Journal Reflection</span>
+                  <span className="font-semibold text-[#1e293b]">Crew Mental Health Journal Reflection</span>
                   <textarea
                     rows={2}
                     value={journalEntry}
@@ -601,21 +601,21 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
       {/* Persistent History Table for Selected Logbook Tab */}
       <div className="sx-panel overflow-hidden">
         <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-          <h2 className="text-xs font-semibold tracking-wide text-[#f8fafc]">
+          <h2 className="text-xs font-semibold tracking-wide text-white">
             {activeTab === 'diet'
               ? 'Recorded Diet & Hydration Entries (SQLite)'
               : activeTab === 'exercise'
               ? 'Recorded Exercise & Countermeasure Sessions (SQLite)'
               : 'Recorded Mental Health Journal Entries (SQLite)'}
           </h2>
-          <span className="text-[11px] font-mono text-[#94a3b8]">Persisted Offline</span>
+          <span className="text-[11px] font-mono text-[#dbeafe]">Persisted Offline</span>
         </div>
 
         <div className="overflow-x-auto max-h-72">
           {activeTab === 'diet' && (
             <table className="w-full text-left border-collapse text-xs font-mono">
               <thead>
-                <tr className="bg-[#0b1018] border-b border-[#1d2636] text-[#94a3b8]">
+                <tr className="bg-[#dce5f0] border-b border-[#9cb0c9] text-[#0f2942]">
                   <th className="py-1.5 px-3">UTC Time</th>
                   <th className="py-1.5 px-3">Meal</th>
                   <th className="py-1.5 px-3">Description</th>
@@ -628,22 +628,22 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
               <tbody>
                 {dietLogs.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-4 px-3 text-center text-[#64748b]">
+                    <td colSpan={7} className="py-4 px-3 text-center text-[#475569]">
                       No meals or hydration logged yet. Add an entry above.
                     </td>
                   </tr>
                 ) : (
                   dietLogs.map((row) => (
-                    <tr key={row.id} className="border-b border-[#141c28] hover:bg-[#111824]">
-                      <td className="py-1.5 px-3 whitespace-nowrap text-[#94a3b8]">
+                    <tr key={row.id} className="border-b border-[#cbd5e1] bg-white hover:bg-[#eff6ff]">
+                      <td className="py-1.5 px-3 whitespace-nowrap text-[#475569]">
                         {row.created_utc.replace('T', ' ').replace('Z', '')}
                       </td>
-                      <td className="py-1.5 px-3 font-semibold text-[#38bdf8]">{row.meal_type}</td>
-                      <td className="py-1.5 px-3 font-sans text-[#f1f5f9]">{row.description}</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.calories_kcal}</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.protein_g}g</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.water_ml} mL</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.vitamin_d_iu} IU</td>
+                      <td className="py-1.5 px-3 font-semibold text-[#0b3d91]">{row.meal_type}</td>
+                      <td className="py-1.5 px-3 font-sans text-[#0f172a]">{row.description}</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.calories_kcal}</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.protein_g}g</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.water_ml} mL</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.vitamin_d_iu} IU</td>
                     </tr>
                   ))
                 )}
@@ -654,7 +654,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
           {activeTab === 'exercise' && (
             <table className="w-full text-left border-collapse text-xs font-mono">
               <thead>
-                <tr className="bg-[#0b1018] border-b border-[#1d2636] text-[#94a3b8]">
+                <tr className="bg-[#dce5f0] border-b border-[#9cb0c9] text-[#0f2942]">
                   <th className="py-1.5 px-3">UTC Time</th>
                   <th className="py-1.5 px-3">Modality</th>
                   <th className="py-1.5 px-3">Duration</th>
@@ -667,22 +667,22 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
               <tbody>
                 {exerciseLogs.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-4 px-3 text-center text-[#64748b]">
+                    <td colSpan={7} className="py-4 px-3 text-center text-[#475569]">
                       No exercise sessions logged yet. Add an ARED, T2, or CEVIS session above.
                     </td>
                   </tr>
                 ) : (
                   exerciseLogs.map((row) => (
-                    <tr key={row.id} className="border-b border-[#141c28] hover:bg-[#111824]">
-                      <td className="py-1.5 px-3 whitespace-nowrap text-[#94a3b8]">
+                    <tr key={row.id} className="border-b border-[#cbd5e1] bg-white hover:bg-[#eff6ff]">
+                      <td className="py-1.5 px-3 whitespace-nowrap text-[#475569]">
                         {row.created_utc.replace('T', ' ').replace('Z', '')}
                       </td>
-                      <td className="py-1.5 px-3 font-semibold text-[#38bdf8] font-sans">{row.modality}</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.duration_min} min</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.intensity}</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.resistance_load_pct}%</td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.calories_burned} kcal</td>
-                      <td className="py-1.5 px-3 font-sans text-[#cbd5e1]">{row.notes}</td>
+                      <td className="py-1.5 px-3 font-semibold text-[#0b3d91] font-sans">{row.modality}</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.duration_min} min</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.intensity}</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.resistance_load_pct}%</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.calories_burned} kcal</td>
+                      <td className="py-1.5 px-3 font-sans text-[#334155]">{row.notes}</td>
                     </tr>
                   ))
                 )}
@@ -693,7 +693,7 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
           {activeTab === 'mental' && (
             <table className="w-full text-left border-collapse text-xs font-mono">
               <thead>
-                <tr className="bg-[#0b1018] border-b border-[#1d2636] text-[#94a3b8]">
+                <tr className="bg-[#dce5f0] border-b border-[#9cb0c9] text-[#0f2942]">
                   <th className="py-1.5 px-3">UTC Time</th>
                   <th className="py-1.5 px-3">Mood</th>
                   <th className="py-1.5 px-3">Stress</th>
@@ -705,23 +705,23 @@ export function CrewLogsPage({ snapshot, onSnapshotUpdate }: CrewLogsPageProps) 
               <tbody>
                 {mentalLogs.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-4 px-3 text-center text-[#64748b]">
+                    <td colSpan={6} className="py-4 px-3 text-center text-[#475569]">
                       No mental health journal entries yet. Log your first behavioral check above.
                     </td>
                   </tr>
                 ) : (
                   mentalLogs.map((row) => (
-                    <tr key={row.id} className="border-b border-[#141c28] hover:bg-[#111824] align-top">
-                      <td className="py-1.5 px-3 whitespace-nowrap text-[#94a3b8]">
+                    <tr key={row.id} className="border-b border-[#cbd5e1] bg-white hover:bg-[#eff6ff] align-top">
+                      <td className="py-1.5 px-3 whitespace-nowrap text-[#475569]">
                         {row.created_utc.replace('T', ' ').replace('Z', '')}
                       </td>
-                      <td className="py-1.5 px-3 font-semibold text-[#f8fafc]">{row.mood_score}/5</td>
-                      <td className={`py-1.5 px-3 font-semibold ${row.stress_level >= 7 ? 'text-[#f59e0b]' : 'text-[#34d399]'}`}>
+                      <td className="py-1.5 px-3 font-semibold text-[#0f172a]">{row.mood_score}/5</td>
+                      <td className={`py-1.5 px-3 font-semibold ${row.stress_level >= 7 ? 'text-[#b45309]' : 'text-[#15803d]'}`}>
                         {row.stress_level}/10
                       </td>
-                      <td className="py-1.5 px-3 text-[#e2e8f0]">{row.sleep_hours.toFixed(1)}h</td>
-                      <td className="py-1.5 px-3 font-sans text-[#cbd5e1]">{row.triggers}</td>
-                      <td className="py-1.5 px-3 font-sans text-[#f1f5f9] max-w-md">{row.journal_entry}</td>
+                      <td className="py-1.5 px-3 text-[#0f172a]">{row.sleep_hours.toFixed(1)}h</td>
+                      <td className="py-1.5 px-3 font-sans text-[#334155]">{row.triggers}</td>
+                      <td className="py-1.5 px-3 font-sans text-[#0f172a] max-w-md">{row.journal_entry}</td>
                     </tr>
                   ))
                 )}

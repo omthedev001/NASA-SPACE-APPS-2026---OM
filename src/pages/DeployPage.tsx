@@ -107,44 +107,44 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <div className="sx-panel overflow-hidden">
           <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-            <h1 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-1.5">
-              <Server className="w-4 h-4 text-[#38bdf8]" />
+            <h1 className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+              <Server className="w-4 h-4 text-[#93c5fd]" />
               <span>Autonomous Edge Runtime &amp; SQLite EHR Storage</span>
             </h1>
-            <span className="text-[11px] font-mono text-[#34d399]">
+            <span className="text-[11px] font-mono text-[#86efac]">
               ■ {backendStatus?.status ?? 'Online'}
             </span>
           </div>
           <div className="p-4 flex flex-col gap-3 text-xs">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-mono">
               <div className="sx-cell p-2.5">
-                <div className="text-[10px] text-[#64748b]">Engine Runtime</div>
-                <div className="font-semibold text-[#f8fafc] mt-0.5">
+                <div className="text-[10px] text-[#475569]">Engine Runtime</div>
+                <div className="font-semibold text-[#0f172a] mt-0.5">
                   Python v{backendStatus?.python_version ?? '3.10'}
                 </div>
               </div>
               <div className="sx-cell p-2.5">
-                <div className="text-[10px] text-[#64748b]">Clinical Exams</div>
-                <div className="font-semibold text-[#f8fafc] mt-0.5">
+                <div className="text-[10px] text-[#475569]">Clinical Exams</div>
+                <div className="font-semibold text-[#0f172a] mt-0.5">
                   {backendStatus?.sqlite?.exam_records_count ?? 0} saved
                 </div>
               </div>
               <div className="sx-cell p-2.5">
-                <div className="text-[10px] text-[#64748b]">Crew Logs</div>
-                <div className="font-semibold text-[#f8fafc] mt-0.5">
+                <div className="text-[10px] text-[#475569]">Crew Logs</div>
+                <div className="font-semibold text-[#0f172a] mt-0.5">
                   {backendStatus?.sqlite?.crew_logs_count ?? 0} entries
                 </div>
               </div>
               <div className="sx-cell p-2.5">
-                <div className="text-[10px] text-[#64748b]">Feed Ticks</div>
-                <div className="font-semibold text-[#f8fafc] mt-0.5">
+                <div className="text-[10px] text-[#475569]">Feed Ticks</div>
+                <div className="font-semibold text-[#0f172a] mt-0.5">
                   {inventory?.feed_rows ?? backendStatus?.feed_rows ?? 36} rows
                 </div>
               </div>
             </div>
 
-            <div className="sx-cell p-3 text-[11px] font-mono text-[#cbd5e1]">
-              <div className="font-semibold text-[#38bdf8] mb-1">Active Flight-Deck Modules:</div>
+            <div className="sx-cell p-3 text-[11px] font-mono text-[#334155]">
+              <div className="font-semibold text-[#0b3d91] mb-1">Active Flight-Deck Modules:</div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1">
                 {(backendStatus?.algorithms ?? []).map((alg) => (
                   <li key={alg}>■ {alg}</li>
@@ -156,30 +156,30 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
 
         <div className="sx-panel overflow-hidden">
           <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-            <h2 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-1.5">
-              <Compass className="w-4 h-4 text-[#38bdf8]" />
+            <h2 className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+              <Compass className="w-4 h-4 text-[#93c5fd]" />
               <span>NASA HRP 5 Spaceflight Hazards &amp; Ground Downlink</span>
             </h2>
-            <span className="text-[11px] font-mono text-[#94a3b8]">
+            <span className="text-[11px] font-mono text-[#dbeafe]">
               Lag: {snapshot.environment_profile.comm_delay}
             </span>
           </div>
           <div className="p-4 flex flex-col gap-3 text-xs">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-[#cbd5e1]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-[#334155]">
               <div className="sx-cell p-2.5">
-                <strong className="text-[#38bdf8]">1. Space Radiation:</strong> P01 flux slope &amp; 250 mSv BFO budget.
+                <strong className="text-[#0b3d91]">1. Space Radiation:</strong> P01 flux slope &amp; 250 mSv BFO budget.
               </div>
               <div className="sx-cell p-2.5">
-                <strong className="text-[#38bdf8]">2. Isolation &amp; Confinement:</strong> Sleep, mood, AI &amp; 4-7-8 pacer.
+                <strong className="text-[#0b3d91]">2. Isolation &amp; Confinement:</strong> Sleep, mood, AI &amp; 4-7-8 pacer.
               </div>
               <div className="sx-cell p-2.5">
-                <strong className="text-[#38bdf8]">3. Distance from Earth:</strong> Zero-cloud SQLite + store-and-forward report.
+                <strong className="text-[#0b3d91]">3. Distance from Earth:</strong> Zero-cloud SQLite + store-and-forward report.
               </div>
               <div className="sx-cell p-2.5">
-                <strong className="text-[#38bdf8]">4. Altered Gravity:</strong> OSD-195 (1.25x) atrophy + cuff BP tracking.
+                <strong className="text-[#0b3d91]">4. Altered Gravity:</strong> OSD-195 ({snapshot.genetic_atrophy_baseline.toFixed(2)}x) atrophy + cuff BP tracking.
               </div>
               <div className="sx-cell p-2.5 sm:col-span-2">
-                <strong className="text-[#38bdf8]">5. Hostile Closed Environments:</strong> EMA SpO2 (&lt;90% hypoxia), ppO2, blood sugar &amp; fever checks.
+                <strong className="text-[#0b3d91]">5. Hostile Closed Environments:</strong> EMA SpO2 (&lt;90% hypoxia), ppO2, blood sugar &amp; fever checks.
               </div>
             </div>
 
@@ -189,7 +189,7 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
                 download="AstroHealth_Supporting_Document.md"
                 className="sx-btn px-3 py-2 text-xs font-semibold flex items-center gap-1.5"
               >
-                <FileText className="w-3.5 h-3.5 text-[#38bdf8]" />
+                <FileText className="w-3.5 h-3.5 text-[#0b3d91]" />
                 <span>Download Mission Brief (MD)</span>
               </a>
               <a
@@ -208,8 +208,8 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
       {/* Mission Dataset Calibration & Real-Data Ingestion Panel */}
       <div className="sx-panel overflow-hidden">
         <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-          <h2 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-1.5">
-            <Database className="w-4 h-4 text-[#38bdf8]" />
+          <h2 className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+            <Database className="w-4 h-4 text-[#93c5fd]" />
             <span>Mission Dataset Calibration &amp; Multi-Source Ingestion</span>
           </h2>
           <button
@@ -218,28 +218,28 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
             disabled={busy}
             className="sx-btn px-2.5 py-1 text-[11px] font-semibold flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
           >
-            <RefreshCw className="w-3 h-3 text-[#38bdf8]" />
+            <RefreshCw className="w-3 h-3 text-[#0b3d91]" />
             <span>Re-Clean &amp; Sync Local Datasets</span>
           </button>
         </div>
 
         <div className="p-4 flex flex-col gap-4 text-xs">
-          <p className="text-[#cbd5e1] leading-relaxed">
-            AstroHealth natively ingests raw <strong className="text-[#f1f5f9]">NASA ICARTT Radiation (.ict/.csv)</strong>,{' '}
-            <strong className="text-[#f1f5f9]">NASA GeneLab OSD-195 RNA-Seq (.txt/.tsv)</strong>,{' '}
-            <strong className="text-[#f1f5f9]">MIMIC-III ICU Labs (LABEVENTS.csv + D_LABITEMS.csv)</strong>, or a pre-merged{' '}
-            <strong className="text-[#f1f5f9]">simulation_feed.csv</strong>. Sentinel missing values (<code className="font-mono text-[#38bdf8]">-9999</code> / <code className="font-mono text-[#38bdf8]">NaN</code>) are automatically cleaned via forward/backward imputation and synced onto monotonic <code className="font-mono text-[#38bdf8]">sim_tick</code> intervals.
+          <p className="text-[#334155] leading-relaxed">
+            AstroHealth natively ingests raw <strong className="text-[#0f172a]">NASA ICARTT Radiation (.ict/.csv)</strong>,{' '}
+            <strong className="text-[#0f172a]">NASA GeneLab OSD-195 RNA-Seq (.txt/.tsv)</strong>,{' '}
+            <strong className="text-[#0f172a]">MIMIC-III ICU Labs (LABEVENTS.csv + D_LABITEMS.csv)</strong>, or a pre-merged{' '}
+            <strong className="text-[#0f172a]">simulation_feed.csv</strong>. Sentinel missing values (<code className="font-mono bg-[#dce5f0] px-1 text-[#0b3d91]">-9999</code> / <code className="font-mono bg-[#dce5f0] px-1 text-[#0b3d91]">NaN</code>) are automatically cleaned via forward/backward imputation and synced onto monotonic <code className="font-mono bg-[#dce5f0] px-1 text-[#0b3d91]">sim_tick</code> intervals.
           </p>
 
           {/* Active Dataset Inventory Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 font-mono text-[11px]">
             <div className="sx-cell p-3">
-              <div className="text-[#38bdf8] font-semibold mb-1">Radiation Telemetry</div>
+              <div className="text-[#0b3d91] font-semibold mb-1">Radiation Telemetry</div>
               {(inventory?.radiation_files ?? []).length === 0 ? (
-                <div className="text-[#64748b]">No .ict/.csv loaded</div>
+                <div className="text-[#475569]">No .ict/.csv loaded</div>
               ) : (
                 (inventory?.radiation_files ?? []).map((f) => (
-                  <div key={f.name} className="text-[#e2e8f0] truncate">
+                  <div key={f.name} className="text-[#0f172a] truncate">
                     ■ {f.name} ({(f.bytes / 1024).toFixed(1)} KB)
                   </div>
                 ))
@@ -247,28 +247,28 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[#38bdf8] font-semibold mb-1">OSD-195 Genomics</div>
+              <div className="text-[#0b3d91] font-semibold mb-1">OSD-195 Genomics</div>
               {(inventory?.osd195_files ?? []).length === 0 ? (
-                <div className="text-[#64748b]">No .txt/.tsv loaded</div>
+                <div className="text-[#475569]">No .txt/.tsv loaded</div>
               ) : (
                 (inventory?.osd195_files ?? []).map((f) => (
-                  <div key={f.name} className="text-[#e2e8f0] truncate">
+                  <div key={f.name} className="text-[#0f172a] truncate">
                     ■ {f.name} ({(f.bytes / 1024).toFixed(1)} KB)
                   </div>
                 ))
               )}
-              <div className="text-[#94a3b8] mt-1">
+              <div className="text-[#475569] mt-1">
                 Baseline: {(inventory?.genetic_atrophy_baseline ?? snapshot.genetic_atrophy_baseline).toFixed(4)}x
               </div>
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[#38bdf8] font-semibold mb-1">MIMIC-III Clinical Labs</div>
+              <div className="text-[#0b3d91] font-semibold mb-1">MIMIC-III Clinical Labs</div>
               {(inventory?.mimic_files ?? []).length === 0 ? (
-                <div className="text-[#64748b]">No CSV files loaded</div>
+                <div className="text-[#475569]">No CSV files loaded</div>
               ) : (
                 (inventory?.mimic_files ?? []).map((f) => (
-                  <div key={f.name} className="text-[#e2e8f0] truncate">
+                  <div key={f.name} className="text-[#0f172a] truncate">
                     ■ {f.name} ({(f.bytes / 1024).toFixed(1)} KB)
                   </div>
                 ))
@@ -276,11 +276,11 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[#34d399] font-semibold mb-1">Synchronized Feed</div>
-              <div className="text-[#f8fafc] font-semibold">
+              <div className="text-[#15803d] font-semibold mb-1">Synchronized Feed</div>
+              <div className="text-[#0f172a] font-semibold">
                 {inventory?.feed_rows ?? snapshot.simulator.total_rows} aligned ticks
               </div>
-              <div className="text-[#94a3b8] mt-1">
+              <div className="text-[#475569] mt-1">
                 Current Tick: {snapshot.simulator.current_row} / {snapshot.simulator.total_rows}
               </div>
             </div>
@@ -290,7 +290,7 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
           <div className="sx-cell p-3.5 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 items-end">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <label className="flex flex-col gap-1">
-                <span className="font-semibold text-[#cbd5e1]">Dataset Stream Target</span>
+                <span className="font-semibold text-[#1e293b]">Dataset Stream Target</span>
                 <select
                   value={uploadTarget}
                   onChange={(e) => setUploadTarget(e.target.value as UploadTarget)}
@@ -305,7 +305,7 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
               </label>
 
               <label className="flex flex-col gap-1">
-                <span className="font-semibold text-[#cbd5e1]">Upload Dataset File for Live Processing</span>
+                <span className="font-semibold text-[#1e293b]">Upload Dataset File for Live Processing</span>
                 <label className="sx-btn-primary px-3 py-2 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer">
                   <Upload className="w-3.5 h-3.5" />
                   <span>{busy ? 'Processing Dataset...' : 'Select & Ingest Dataset File'}</span>
@@ -320,7 +320,7 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
               </label>
             </div>
 
-            <div className="text-[11px] font-mono text-[#94a3b8]">
+            <div className="text-[11px] font-mono text-[#475569]">
               Updates live playback immediately
             </div>
           </div>
@@ -329,8 +329,8 @@ export function DeployPage({ snapshot, onSnapshotUpdate }: DeployPageProps) {
             <div
               className={`p-2.5 border font-mono text-[11px] ${
                 statusMessage.ok
-                  ? 'bg-[#071f14] border-[#15803d] text-[#34d399]'
-                  : 'bg-[#240a0c] border-[#b91c1c] text-[#ef4444]'
+                  ? 'bg-[#ecfdf5] border-[#16a34a] text-[#15803d]'
+                  : 'bg-[#fef2f2] border-[#dc2626] text-[#dc2626]'
               }`}
             >
               {statusMessage.ok ? '■ ' : '✖ '}

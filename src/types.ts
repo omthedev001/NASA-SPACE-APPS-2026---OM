@@ -74,6 +74,19 @@ export interface HistoryPoint {
   map_mmhg?: number;
 }
 
+export interface LiveLabs {
+  lactate: number | null;
+  cortisol: number | null;
+  crp: number | null;
+  hemoglobin: number | null;
+  wbc: number | null;
+  po2: number | null;
+  pco2: number | null;
+  ph: number | null;
+  sodium: number | null;
+  potassium: number | null;
+}
+
 export interface TelemetrySnapshot {
   timestamp: number;
   smoothed_spo2: number;
@@ -89,6 +102,7 @@ export interface TelemetrySnapshot {
   mental_stress_index: number;
   mental_checkin: MentalCheckin;
   self_assessment: SelfAssessment;
+  live_labs?: LiveLabs;
   news2?: News2Summary;
   daily_logs_summary?: DailyLogsSummary;
   environment: MissionEnvironment;

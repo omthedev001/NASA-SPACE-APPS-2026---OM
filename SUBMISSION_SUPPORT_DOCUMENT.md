@@ -51,8 +51,10 @@ AstroHealth Edge OS is engineered to work seamlessly with real NASA and clinical
    - Isolates the target subject cohort, removes non-numeric records, pivots `CHARTTIME` chronologically, maps physiological channels (`Heart Rate`, `Oxygen Saturation`, `Lactate`), and imputes missing intervals via `.ffill().bfill()`.
    - Also accepts direct Vital CSV files containing `heart_rate`, `spo2`, and `lactate` columns.
 
-4. **Synchronized Playback Feed (`data/simulation_feed.csv`)**
-   - Aligns radiation and clinical streams along monotonic `sim_tick` rows for deterministic 1 Hz live simulation and replay.
+4. **Synchronized Playback Feed (`data/simulation_feed.csv` — 156 Real Merged Ticks)**
+   - Pre-loaded with the real merged **156-tick MIMIC-III + ICARTT Radiation + NASA OSD-195** telemetry dataset (88 clinical lab & space weather channels).
+   - Maps `P01` (2.00–5.13 pfu), `ARML3dr`, `genetic_atrophy_baseline` (`2.6954x`), `Glucose` (40–355 mg/dL), `Temperature` (38.7 °C), `Lactate` (1.3–5.6 mmol/L), `Cortisol`, `C-Reactive Protein`, `Hemoglobin`, `WBC`, and arterial blood gases (`pO2`, `pCO2`, `pH`).
+   - Automatically converts arterial `pO2` (mmHg) to `SpO2` (%) via the **Severinghaus oxygen-hemoglobin dissociation curve** and derives autonomic heart rate from temperature, lactate, and cortisol stress load when direct pulse-oximeter columns are omitted.
 
 ### B. Using Your Own Datasets
 - **Via UI:** Navigate to **Mission Data** (`#deploy`), select the stream target (`NASA Radiation`, `OSD-195`, `MIMIC-III LABEVENTS.csv`, `D_LABITEMS.csv`, or `simulation_feed.csv`), and upload your file. Python automatically cleans, merges, and begins streaming your dataset immediately.

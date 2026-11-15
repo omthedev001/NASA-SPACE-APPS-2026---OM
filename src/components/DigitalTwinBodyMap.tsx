@@ -20,28 +20,28 @@ function SegmentedFlightMeter({
   const activeCount = Math.max(1, Math.min(segments, Math.round((percent / 100) * segments)));
   const activeColor =
     tone === 'red'
-      ? 'bg-[#ef4444]'
+      ? 'bg-[#dc2626]'
       : tone === 'amber'
-      ? 'bg-[#f59e0b]'
+      ? 'bg-[#d97706]'
       : tone === 'cyan'
-      ? 'bg-[#38bdf8]'
-      : 'bg-[#22c55e]';
+      ? 'bg-[#0b3d91]'
+      : 'bg-[#15803d]';
 
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between text-xs">
-        <span className="text-[#94a3b8] font-medium">{label}</span>
-        <span className="font-mono font-semibold text-[#f8fafc]">{valueText}</span>
+        <span className="text-[#334155] font-medium">{label}</span>
+        <span className="font-mono font-bold text-[#0f172a]">{valueText}</span>
       </div>
       <div
-        className="grid grid-cols-12 gap-1 p-1 bg-[#06080d] border border-[#1a2333]"
+        className="grid grid-cols-12 gap-1 p-1 bg-[#dce5f0] border border-[#9cb0c9]"
         aria-hidden="true"
       >
         {Array.from({ length: segments }).map((_, idx) => (
           <div
             key={idx}
             className={`h-2 transition-colors duration-150 ${
-              idx < activeCount ? activeColor : 'bg-[#172030]'
+              idx < activeCount ? activeColor : 'bg-[#cbd5e1]'
             }`}
           />
         ))}
@@ -71,12 +71,12 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
     body_temp_c >= 38.0 ||
     body_temp_c < 35.5;
 
-  const lungsFill = isHypoxia ? '#dc2626' : '#16a34a';
-  const brainFill = isMentalAlert || isSpeWarning ? '#d97706' : '#16a34a';
+  const lungsFill = isHypoxia ? '#dc2626' : '#15803d';
+  const brainFill = isMentalAlert || isSpeWarning ? '#d97706' : '#15803d';
   const heartFill =
-    systolic_bp < 90 ? '#dc2626' : isBpAlert || snapshot.smoothed_heart_rate > 110 ? '#d97706' : '#16a34a';
-  const metabolicFill = isMetabolicAlert ? '#d97706' : '#0284c7';
-  const musclesFill = snapshot.muscle_atrophy_risk > 1.35 ? '#d97706' : '#0284c7';
+    systolic_bp < 90 ? '#dc2626' : isBpAlert || snapshot.smoothed_heart_rate > 110 ? '#d97706' : '#15803d';
+  const metabolicFill = isMetabolicAlert ? '#d97706' : '#0b3d91';
+  const musclesFill = snapshot.muscle_atrophy_risk > 1.35 ? '#d97706' : '#0b3d91';
 
   const cabinPpO2kPa = Number(((snapshot.smoothed_spo2 / 98.0) * 21.3).toFixed(1));
   const o2MarginPct = Math.max(5, Math.min(100, ((snapshot.smoothed_spo2 - 78) / 22) * 100));
@@ -84,7 +84,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
   const mentalReservePct = Math.max(5, Math.min(100, 100 - snapshot.mental_stress_index));
   const muscleCapacityPct = Math.max(
     15,
-    Math.min(100, 100 - (snapshot.muscle_atrophy_risk - 1.0) * 110)
+    Math.min(100, 100 - (snapshot.muscle_atrophy_risk - 1.0) * 42)
   );
 
   const partGuides: Record<
@@ -102,7 +102,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
     brain: {
       title: 'Neurocognitive & Behavioral Health',
       statusText: isMentalAlert ? '▲ Strained' : '■ Nominal',
-      statusTone: isMentalAlert ? 'text-[#f59e0b]' : 'text-[#34d399]',
+      statusTone: isMentalAlert ? 'text-[#b45309]' : 'text-[#15803d]',
       functionDesc:
         'Governs executive decision-making, circadian sleep regulation, mood stability, and autonomic balance.',
       hrpHazard: 'Isolation & Confinement · Distance from Earth · CNS Radiation',
@@ -114,7 +114,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
     lungs: {
       title: 'Pulmonary & Cabin Gas Exchange',
       statusText: isHypoxia ? '✖ Hypoxia (<90%)' : '■ Nominal (>=90%)',
-      statusTone: isHypoxia ? 'text-[#ef4444]' : 'text-[#34d399]',
+      statusTone: isHypoxia ? 'text-[#dc2626]' : 'text-[#15803d]',
       functionDesc:
         'Maintains alveolar oxygen delivery and CO2 washout inside sealed spacecraft life support.',
       hrpHazard: 'Hostile Closed Environments (ppO2 drop, CO2 scrubber fault)',
@@ -126,7 +126,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
     heart: {
       title: 'Cardiovascular & Arterial Perfusion',
       statusText: isBpAlert ? '▲ BP Deviation' : '■ Nominal',
-      statusTone: isBpAlert ? 'text-[#f59e0b]' : 'text-[#34d399]',
+      statusTone: isBpAlert ? 'text-[#b45309]' : 'text-[#15803d]',
       functionDesc:
         'Sustains arterial pressure and cerebral blood flow against cephalad fluid shifts in altered gravity.',
       hrpHazard: 'Altered Gravity Fields (orthostatic intolerance)',
@@ -138,7 +138,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
     metabolic: {
       title: 'Metabolic, Glucose & Immune System',
       statusText: isMetabolicAlert ? '▲ Metabolic Alert' : '■ Nominal',
-      statusTone: isMetabolicAlert ? 'text-[#f59e0b]' : 'text-[#34d399]',
+      statusTone: isMetabolicAlert ? 'text-[#b45309]' : 'text-[#15803d]',
       functionDesc:
         'Balances blood glucose energy reserves, core thermoregulation (36.5–37.4 °C), and immune surveillance.',
       hrpHazard: 'Inadequate Nutrition · Closed-Loop Immune Reactivation',
@@ -150,12 +150,12 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
     muscles: {
       title: 'Musculoskeletal & Bone Integrity',
       statusText: `■ ${snapshot.muscle_atrophy_risk.toFixed(3)}x Load`,
-      statusTone: 'text-[#38bdf8]',
+      statusTone: 'text-[#0b3d91]',
       functionDesc:
         'Preserves posture, EVA strength, and skeletal mineral density during prolonged unloading.',
       hrpHazard: `Altered Gravity (${snapshot.environment_profile.gravity_g.toFixed(2)}g) · Bone Loss & Atrophy`,
       howToMeasure:
-        'Log daily ARED resistive and cardio exercise minutes alongside OSD-195 atrophy multiplier (1.25x baseline).',
+        `Log daily ARED resistive and cardio exercise minutes alongside OSD-195 atrophy multiplier (${snapshot.genetic_atrophy_baseline.toFixed(2)}x baseline).`,
       escalation:
         'Increase daily ARED loading if atrophy index rises above 1.35x or crew reports persistent soreness.',
     },
@@ -168,7 +168,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
       <div className="grid grid-cols-1 xl:grid-cols-[248px_1fr] gap-4 items-stretch">
         {/* Interactive Crew Biometric Schematic — Zero Circles */}
         <div className="sx-cell p-3.5 flex flex-col items-center justify-between gap-2">
-          <div className="w-full flex items-center justify-between text-[11px] font-mono text-[#64748b] border-b border-[#1a2333] pb-1.5">
+          <div className="w-full flex items-center justify-between text-[11px] font-mono text-[#475569] border-b border-[#b6c6d8] pb-1.5">
             <span>Select Region</span>
             <span>EMA α=0.30</span>
           </div>
@@ -179,24 +179,24 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
             viewBox="0 0 190 310"
             role="img"
             aria-label="Interactive Crew Biometric Schematic"
-            className="select-none"
+            className="select-none bg-white border border-[#b6c6d8]"
           >
             {/* Telemetry Axes */}
-            <line x1="95" y1="6" x2="95" y2="304" stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
-            <line x1="12" y1="110" x2="178" y2="110" stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
+            <line x1="95" y1="6" x2="95" y2="304" stroke="#cbd5e1" strokeWidth="1" strokeDasharray="3 3" />
+            <line x1="12" y1="110" x2="178" y2="110" stroke="#cbd5e1" strokeWidth="1" strokeDasharray="3 3" />
 
             {/* Angular Suit / Body Silhouette */}
             <polygon
               points="76,12 114,12 124,24 124,54 114,66 76,66 66,54 66,24"
-              fill="#0d131d"
+              fill="#e2e8f0"
               stroke="#475569"
               strokeWidth="1.5"
             />
-            <rect x="50" y="72" width="90" height="126" fill="#0d131d" stroke="#475569" strokeWidth="1.5" />
-            <rect x="24" y="76" width="20" height="96" fill="#0d131d" stroke="#475569" strokeWidth="1.5" />
-            <rect x="146" y="76" width="20" height="96" fill="#0d131d" stroke="#475569" strokeWidth="1.5" />
-            <rect x="56" y="204" width="32" height="94" fill="#0d131d" stroke="#475569" strokeWidth="1.5" />
-            <rect x="102" y="204" width="32" height="94" fill="#0d131d" stroke="#475569" strokeWidth="1.5" />
+            <rect x="50" y="72" width="90" height="126" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
+            <rect x="24" y="76" width="20" height="96" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
+            <rect x="146" y="76" width="20" height="96" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
+            <rect x="56" y="204" width="32" height="94" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
+            <rect x="102" y="204" width="32" height="94" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
 
             <g
               onClick={() => setSelectedPart('brain')}
@@ -211,7 +211,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
                 width="46"
                 height="28"
                 fill={brainFill}
-                stroke={selectedPart === 'brain' ? '#38bdf8' : '#06080d'}
+                stroke={selectedPart === 'brain' ? '#fc3d21' : '#0f172a'}
                 strokeWidth={selectedPart === 'brain' ? '2.5' : '1.2'}
               />
               <text x="95" y="39" textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="700" className="font-mono">
@@ -232,7 +232,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
                 width="74"
                 height="34"
                 fill={lungsFill}
-                stroke={selectedPart === 'lungs' ? '#38bdf8' : '#06080d'}
+                stroke={selectedPart === 'lungs' ? '#fc3d21' : '#0f172a'}
                 strokeWidth={selectedPart === 'lungs' ? '2.5' : '1.2'}
               />
               <text x="95" y="100" textAnchor="middle" fill="#ffffff" fontSize="9.5" fontWeight="700" className="font-mono">
@@ -253,7 +253,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
                 width="35"
                 height="30"
                 fill={heartFill}
-                stroke={selectedPart === 'heart' ? '#38bdf8' : '#06080d'}
+                stroke={selectedPart === 'heart' ? '#fc3d21' : '#0f172a'}
                 strokeWidth={selectedPart === 'heart' ? '2.5' : '1.2'}
               />
               <text x="75.5" y="136" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="700" className="font-mono">
@@ -274,7 +274,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
                 width="35"
                 height="30"
                 fill={metabolicFill}
-                stroke={selectedPart === 'metabolic' ? '#38bdf8' : '#06080d'}
+                stroke={selectedPart === 'metabolic' ? '#fc3d21' : '#0f172a'}
                 strokeWidth={selectedPart === 'metabolic' ? '2.5' : '1.2'}
               />
               <text x="114.5" y="136" textAnchor="middle" fill="#ffffff" fontSize="7.5" fontWeight="700" className="font-mono">
@@ -295,7 +295,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
                 width="74"
                 height="34"
                 fill={musclesFill}
-                stroke={selectedPart === 'muscles' ? '#38bdf8' : '#06080d'}
+                stroke={selectedPart === 'muscles' ? '#fc3d21' : '#0f172a'}
                 strokeWidth={selectedPart === 'muscles' ? '2.5' : '1.2'}
               />
               <text x="95" y="174" textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="700" className="font-mono">
@@ -304,14 +304,14 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
             </g>
           </svg>
 
-          <div className="w-full pt-2 border-t border-[#1a2333] text-[11px] font-mono flex flex-col gap-1">
+          <div className="w-full pt-2 border-t border-[#b6c6d8] text-[11px] font-mono flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <span className="text-[#64748b]">Active Node</span>
-              <span className="text-[#38bdf8] font-bold uppercase">{selectedPart}</span>
+              <span className="text-[#475569]">Active Node</span>
+              <span className="text-[#0b3d91] font-bold uppercase">{selectedPart}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[#64748b]">Gravity Vector</span>
-              <span className="text-[#f1f5f9] font-semibold">
+              <span className="text-[#475569]">Gravity Vector</span>
+              <span className="text-[#0f172a] font-semibold">
                 {snapshot.environment_profile.gravity_g.toFixed(2)} g
               </span>
             </div>
@@ -322,68 +322,68 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
         <div className="flex flex-col justify-between gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             <div className="sx-cell p-3">
-              <div className="text-[11px] text-[#94a3b8] flex items-center justify-between">
+              <div className="text-[11px] text-[#475569] flex items-center justify-between">
                 <span>Blood Oxygen (SpO2)</span>
-                <span className={`font-mono font-semibold ${isHypoxia ? 'text-[#ef4444]' : 'text-[#34d399]'}`}>
+                <span className={`font-mono font-bold ${isHypoxia ? 'text-[#dc2626]' : 'text-[#15803d]'}`}>
                   {isHypoxia ? '✖ <90%' : '■ Safe'}
                 </span>
               </div>
               <div className="mt-1.5 flex items-baseline">
-                <span className={`text-2xl font-mono font-bold ${isHypoxia ? 'text-[#ef4444]' : 'text-[#f8fafc]'}`}>
+                <span className={`text-2xl font-mono font-bold ${isHypoxia ? 'text-[#dc2626]' : 'text-[#0f172a]'}`}>
                   {snapshot.smoothed_spo2.toFixed(1)}
                 </span>
                 <span className="text-xs font-mono text-[#64748b] ml-1">%</span>
-                <span className="text-[11px] font-mono text-[#94a3b8] ml-auto">
+                <span className="text-[11px] font-mono text-[#475569] ml-auto">
                   {cabinPpO2kPa} kPa
                 </span>
               </div>
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[11px] text-[#94a3b8] flex items-center justify-between">
+              <div className="text-[11px] text-[#475569] flex items-center justify-between">
                 <span>Heart Rate &amp; BP</span>
-                <span className={`font-mono font-semibold ${isBpAlert ? 'text-[#f59e0b]' : 'text-[#34d399]'}`}>
+                <span className={`font-mono font-bold ${isBpAlert ? 'text-[#b45309]' : 'text-[#15803d]'}`}>
                   {isBpAlert ? '▲ Check' : '■ Safe'}
                 </span>
               </div>
               <div className="mt-1.5 flex items-baseline">
-                <span className="text-2xl font-mono font-bold text-[#f8fafc]">
+                <span className="text-2xl font-mono font-bold text-[#0f172a]">
                   {snapshot.smoothed_heart_rate.toFixed(0)}
                 </span>
                 <span className="text-xs font-mono text-[#64748b] ml-1">bpm</span>
-                <span className="text-[11px] font-mono text-[#94a3b8] ml-auto">
+                <span className="text-[11px] font-mono text-[#475569] ml-auto">
                   {systolic_bp}/{diastolic_bp}
                 </span>
               </div>
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[11px] text-[#94a3b8] flex items-center justify-between">
+              <div className="text-[11px] text-[#475569] flex items-center justify-between">
                 <span>Proton Flux (P01)</span>
-                <span className={`font-mono font-semibold ${isSpeWarning ? 'text-[#f59e0b]' : 'text-[#34d399]'}`}>
+                <span className={`font-mono font-bold ${isSpeWarning ? 'text-[#b45309]' : 'text-[#15803d]'}`}>
                   {isSpeWarning ? '▲ SPE' : '■ Quiet'}
                 </span>
               </div>
               <div className="mt-1.5 flex items-baseline">
-                <span className="text-2xl font-mono font-bold text-[#38bdf8]">
+                <span className="text-2xl font-mono font-bold text-[#0b3d91]">
                   {snapshot.radiation_flux.toFixed(2)}
                 </span>
                 <span className="text-xs font-mono text-[#64748b] ml-1">pfu</span>
-                <span className="text-[11px] font-mono text-[#94a3b8] ml-auto">
+                <span className="text-[11px] font-mono text-[#475569] ml-auto">
                   {snapshot.radiation_slope.toFixed(2)}/s
                 </span>
               </div>
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[11px] text-[#94a3b8] flex items-center justify-between">
+              <div className="text-[11px] text-[#475569] flex items-center justify-between">
                 <span>Blood Glucose</span>
                 <span className="text-[11px] font-mono text-[#64748b]">70–140</span>
               </div>
               <div className="mt-1.5 flex items-baseline">
                 <span
                   className={`text-2xl font-mono font-bold ${
-                    blood_sugar_mg_dl < 70 || blood_sugar_mg_dl > 180 ? 'text-[#f59e0b]' : 'text-[#f8fafc]'
+                    blood_sugar_mg_dl < 70 || blood_sugar_mg_dl > 180 ? 'text-[#b45309]' : 'text-[#0f172a]'
                   }`}
                 >
                   {blood_sugar_mg_dl}
@@ -393,14 +393,14 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[11px] text-[#94a3b8] flex items-center justify-between">
+              <div className="text-[11px] text-[#475569] flex items-center justify-between">
                 <span>Core Temperature</span>
                 <span className="text-[11px] font-mono text-[#64748b]">36.5–37.4</span>
               </div>
               <div className="mt-1.5 flex items-baseline">
                 <span
                   className={`text-2xl font-mono font-bold ${
-                    body_temp_c >= 38.0 || body_temp_c < 35.5 ? 'text-[#f59e0b]' : 'text-[#f8fafc]'
+                    body_temp_c >= 38.0 || body_temp_c < 35.5 ? 'text-[#b45309]' : 'text-[#0f172a]'
                   }`}
                 >
                   {body_temp_c.toFixed(1)}
@@ -410,7 +410,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
             </div>
 
             <div className="sx-cell p-3">
-              <div className="text-[11px] text-[#94a3b8] flex items-center justify-between">
+              <div className="text-[11px] text-[#475569] flex items-center justify-between">
                 <span>Behavioral Load</span>
                 <span className="text-[11px] font-mono text-[#64748b]">
                   {snapshot.mental_checkin.sleep_hours.toFixed(1)}h sleep
@@ -419,7 +419,7 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
               <div className="mt-1.5 flex items-baseline">
                 <span
                   className={`text-2xl font-mono font-bold ${
-                    isMentalAlert ? 'text-[#f59e0b]' : 'text-[#34d399]'
+                    isMentalAlert ? 'text-[#b45309]' : 'text-[#15803d]'
                   }`}
                 >
                   {snapshot.mental_stress_index.toFixed(1)}
@@ -430,9 +430,9 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
           </div>
 
           <div className="sx-cell p-3.5 flex flex-col gap-3">
-            <div className="text-xs font-semibold text-[#e2e8f0] flex items-center justify-between border-b border-[#1a2333] pb-1.5">
+            <div className="text-xs font-semibold text-[#0f2942] flex items-center justify-between border-b border-[#b6c6d8] pb-1.5">
               <span>Systems Readiness Margins</span>
-              <span className="text-[11px] font-mono text-[#64748b]">{snapshot.environment_profile.label}</span>
+              <span className="text-[11px] font-mono text-[#475569]">{snapshot.environment_profile.label}</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5">
               <SegmentedFlightMeter
@@ -466,26 +466,26 @@ export function DigitalTwinBodyMap({ snapshot }: DigitalTwinBodyMapProps) {
 
       {/* Selected System Inspection Guide */}
       <div className="sx-cell p-3.5">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#1a2333] pb-2 mb-2.5">
-          <span className="text-xs font-semibold text-[#f1f5f9]">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#b6c6d8] pb-2 mb-2.5">
+          <span className="text-xs font-bold text-[#0f2942]">
             {activeGuide.title}
           </span>
-          <span className={`text-xs font-mono font-semibold ${activeGuide.statusTone}`}>
+          <span className={`text-xs font-mono font-bold ${activeGuide.statusTone}`}>
             {activeGuide.statusText}
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-[#94a3b8]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-[#334155]">
           <div>
-            <div className="font-semibold text-[#e2e8f0]">Physiological Function</div>
+            <div className="font-bold text-[#0b3d91]">Physiological Function</div>
             <p className="mt-0.5 leading-relaxed">{activeGuide.functionDesc}</p>
-            <div className="font-semibold text-[#e2e8f0] mt-2">NASA HRP Hazard Link</div>
+            <div className="font-bold text-[#0b3d91] mt-2">NASA HRP Hazard Link</div>
             <p className="mt-0.5 leading-relaxed">{activeGuide.hrpHazard}</p>
           </div>
           <div>
-            <div className="font-semibold text-[#e2e8f0]">How to Self-Measure</div>
+            <div className="font-bold text-[#0b3d91]">How to Self-Measure</div>
             <p className="mt-0.5 leading-relaxed">{activeGuide.howToMeasure}</p>
-            <div className="font-semibold text-[#e2e8f0] mt-2">Escalation Threshold</div>
+            <div className="font-bold text-[#0b3d91] mt-2">Escalation Threshold</div>
             <p className="mt-0.5 leading-relaxed">{activeGuide.escalation}</p>
           </div>
         </div>

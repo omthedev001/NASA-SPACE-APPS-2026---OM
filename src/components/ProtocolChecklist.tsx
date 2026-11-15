@@ -102,19 +102,19 @@ export function ProtocolChecklist({
       <div className="sx-panel overflow-hidden">
         <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
           <h2 className="text-xs font-semibold">Daily Crew Routine</h2>
-          <span className="text-[11px] font-mono text-[#94a3b8]">
+          <span className="text-[11px] font-mono text-[#dbeafe]">
             {routineDoneCount}/{DAILY_ROUTINES.length} Complete
           </span>
         </div>
         <div className="p-3.5 flex flex-col gap-2.5">
           <div className="sx-cell p-2.5 flex flex-col gap-1.5">
-            <div className="flex items-center justify-between text-[11px] font-mono text-[#94a3b8]">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[#334155]">
               <span>Routine Compliance</span>
-              <span className="font-semibold text-[#38bdf8]">{routinePct}%</span>
+              <span className="font-bold text-[#0b3d91]">{routinePct}%</span>
             </div>
-            <div className="h-2 w-full bg-[#06080d] border border-[#1a2333]">
+            <div className="h-2 w-full bg-[#dce5f0] border border-[#9cb0c9]">
               <div
-                className="h-full bg-[#38bdf8] transition-all duration-150"
+                className="h-full bg-[#0b3d91] transition-all duration-150"
                 style={{ width: `${routinePct}%` }}
               />
             </div>
@@ -130,20 +130,20 @@ export function ProtocolChecklist({
                     onClick={() => onToggleRoutine(item.id)}
                     className={`w-full text-left flex items-start gap-2.5 px-2.5 py-2 border text-xs transition-colors cursor-pointer ${
                       checked
-                        ? 'bg-[#091b14] border-[#166534]'
-                        : 'bg-[#080b11] border-[#1a2333] hover:border-[#38bdf8]'
+                        ? 'bg-[#ecfdf5] border-[#16a34a]'
+                        : 'bg-white border-[#b6c6d8] hover:border-[#0b3d91]'
                     }`}
                   >
                     {checked ? (
-                      <CheckSquare className="w-4 h-4 text-[#34d399] shrink-0 mt-0.5" />
+                      <CheckSquare className="w-4 h-4 text-[#15803d] shrink-0 mt-0.5" />
                     ) : (
                       <Square className="w-4 h-4 text-[#64748b] shrink-0 mt-0.5" />
                     )}
                     <div>
-                      <div className={checked ? 'line-through text-[#64748b] font-semibold' : 'text-[#e2e8f0] font-semibold'}>
+                      <div className={checked ? 'line-through text-[#64748b] font-semibold' : 'text-[#0f172a] font-semibold'}>
                         {item.title}
                       </div>
-                      <div className="text-[11px] text-[#94a3b8] mt-0.5">{item.why}</div>
+                      <div className="text-[11px] text-[#475569] mt-0.5">{item.why}</div>
                     </div>
                   </button>
                 </li>
@@ -158,7 +158,7 @@ export function ProtocolChecklist({
           <h2 className="text-xs font-semibold">
             Active Countermeasure Checklist
           </h2>
-          <span className="text-[11px] font-mono text-[#94a3b8]">
+          <span className="text-[11px] font-mono text-[#dbeafe]">
             {protocols.length === 0 ? 'Standby' : `${doneSteps}/${totalSteps} Cleared`}
           </span>
         </div>
@@ -166,13 +166,13 @@ export function ProtocolChecklist({
         <div className="p-3.5 flex flex-col gap-3 flex-1">
           {totalSteps > 0 && (
             <div className="sx-cell p-2.5 flex flex-col gap-1.5">
-              <div className="flex items-center justify-between text-[11px] font-mono text-[#94a3b8]">
+              <div className="flex items-center justify-between text-[11px] font-mono text-[#334155]">
                 <span>Checklist Progress</span>
-                <span className="font-semibold text-[#34d399]">{completionPct}%</span>
+                <span className="font-bold text-[#15803d]">{completionPct}%</span>
               </div>
-              <div className="h-2 w-full bg-[#06080d] border border-[#1a2333]">
+              <div className="h-2 w-full bg-[#dce5f0] border border-[#9cb0c9]">
                 <div
-                  className="h-full bg-[#22c55e] transition-all duration-150"
+                  className="h-full bg-[#15803d] transition-all duration-150"
                   style={{ width: `${completionPct}%` }}
                 />
               </div>
@@ -181,10 +181,10 @@ export function ProtocolChecklist({
 
           {protocols.length === 0 ? (
             <div className="sx-cell flex-1 min-h-[180px] p-5 flex flex-col items-center justify-center text-center gap-2">
-              <div className="text-sm font-mono font-semibold text-[#34d399]">
+              <div className="text-sm font-mono font-bold text-[#15803d]">
                 ■ All Systems Nominal
               </div>
-              <p className="text-xs text-[#94a3b8] max-w-[30ch] leading-relaxed">
+              <p className="text-xs text-[#475569] max-w-[30ch] leading-relaxed">
                 Streamed vitals, radiation slope, self-measurements, and behavioral stress indicators are within flight limits.
               </p>
             </div>
@@ -196,28 +196,28 @@ export function ProtocolChecklist({
                   <div
                     key={proto.id}
                     className={`sx-cell p-3 flex flex-col gap-2 ${
-                      isCritical ? 'border-[#dc2626]' : 'border-[#d97706]'
+                      isCritical ? 'border-[#dc2626] bg-[#fef2f2]' : 'border-[#d97706] bg-[#fffbeb]'
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2 border-b border-[#1a2333] pb-2">
+                    <div className="flex items-start justify-between gap-2 border-b border-[#cbd5e1] pb-2">
                       <div>
-                        <div className="text-[11px] text-[#94a3b8]">
+                        <div className="text-[11px] text-[#475569]">
                           {categoryLabel(proto.category)} · {proto.hrp_factor}
                         </div>
-                        <h3 className="text-xs font-semibold text-[#f8fafc] mt-0.5">
+                        <h3 className="text-xs font-bold text-[#0f172a] mt-0.5">
                           {proto.hazard}
                         </h3>
                       </div>
                       <span
-                        className={`text-[11px] font-mono font-semibold whitespace-nowrap shrink-0 ${
-                          isCritical ? 'text-[#ef4444]' : 'text-[#f59e0b]'
+                        className={`text-[11px] font-mono font-bold whitespace-nowrap shrink-0 ${
+                          isCritical ? 'text-[#dc2626]' : 'text-[#b45309]'
                         }`}
                       >
                         {isCritical ? '✖ CRITICAL' : '▲ WARNING'}
                       </span>
                     </div>
 
-                    <p className="text-[11px] text-[#94a3b8] leading-snug">
+                    <p className="text-[11px] text-[#334155] leading-snug">
                       {proto.guidance}
                     </p>
 
@@ -232,18 +232,18 @@ export function ProtocolChecklist({
                               onClick={() => toggleStep(key)}
                               className={`w-full text-left flex items-start gap-2 px-2.5 py-2 border text-xs transition-colors duration-150 cursor-pointer ${
                                 checked
-                                  ? 'bg-[#091b14] border-[#166534]'
-                                  : 'bg-[#0c111a] border-[#1e293b] hover:border-[#38bdf8]'
+                                  ? 'bg-[#ecfdf5] border-[#16a34a]'
+                                  : 'bg-white border-[#b6c6d8] hover:border-[#0b3d91]'
                               }`}
                             >
                               {checked ? (
-                                <CheckSquare className="w-4 h-4 text-[#34d399] shrink-0 mt-0.5" />
+                                <CheckSquare className="w-4 h-4 text-[#15803d] shrink-0 mt-0.5" />
                               ) : (
                                 <Square className="w-4 h-4 text-[#64748b] shrink-0 mt-0.5" />
                               )}
                               <span
                                 className={`leading-snug ${
-                                  checked ? 'line-through text-[#64748b]' : 'text-[#e2e8f0]'
+                                  checked ? 'line-through text-[#64748b]' : 'text-[#0f172a]'
                                 }`}
                               >
                                 {step}

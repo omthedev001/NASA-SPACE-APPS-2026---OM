@@ -49,11 +49,11 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
       <section className="flex flex-col gap-4">
         <div className="sx-panel overflow-hidden">
           <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-            <h1 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-1.5">
-              <Brain className="w-4 h-4 text-[#38bdf8]" />
+            <h1 className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+              <Brain className="w-4 h-4 text-[#93c5fd]" />
               <span>Behavioral &amp; Isolation Check-In</span>
             </h1>
-            <span className="text-[11px] font-mono text-[#38bdf8]">
+            <span className="text-[11px] font-mono text-[#dbeafe]">
               Stress {snapshot.mental_stress_index.toFixed(1)}/100
             </span>
           </div>
@@ -100,8 +100,8 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
                     className={`py-1.5 font-semibold border cursor-pointer ${
                       selected
                         ? opt.id === 'rested'
-                          ? 'bg-[#071f14] border-[#15803d] text-[#34d399]'
-                          : 'bg-[#1f1606] border-[#b45309] text-[#f59e0b]'
+                          ? 'bg-[#ecfdf5] border-[#16a34a] text-[#15803d]'
+                          : 'bg-[#fffbeb] border-[#d97706] text-[#b45309]'
                         : 'sx-btn'
                     }`}
                   >
@@ -112,9 +112,9 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="wellness-sleep" className="font-mono text-[11px] flex justify-between text-[#94a3b8]">
+              <label htmlFor="wellness-sleep" className="font-mono text-[11px] flex justify-between text-[#475569]">
                 <span>Daily Sleep Hours</span>
-                <span className="font-semibold text-[#f8fafc]">{checkin.sleep_hours.toFixed(1)} / 8.0 hrs</span>
+                <span className="font-semibold text-[#0f172a]">{checkin.sleep_hours.toFixed(1)} / 8.0 hrs</span>
               </label>
               <input
                 id="wellness-sleep"
@@ -131,9 +131,9 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="wellness-mood" className="font-mono text-[11px] flex justify-between text-[#94a3b8]">
+              <label htmlFor="wellness-mood" className="font-mono text-[11px] flex justify-between text-[#475569]">
                 <span>Crew Mood Rating (1=Low, 5=Optimal)</span>
-                <span className="font-semibold text-[#f8fafc]">{checkin.mood_score} / 5</span>
+                <span className="font-semibold text-[#0f172a]">{checkin.mood_score} / 5</span>
               </label>
               <input
                 id="wellness-mood"
@@ -149,9 +149,9 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
               />
             </div>
 
-            <div className="flex flex-col gap-2 pt-2 border-t border-[#1d2636]">
+            <div className="flex flex-col gap-2 pt-2 border-t border-[#cbd5e1]">
               <label className="sx-cell p-2.5 flex items-center justify-between cursor-pointer">
-                <span className="font-medium text-[#e2e8f0]">Cognitive / Attention Fatigue</span>
+                <span className="font-medium text-[#1e293b]">Cognitive / Attention Fatigue</span>
                 <input
                   type="checkbox"
                   checked={checkin.cognitive_fatigue}
@@ -161,7 +161,7 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
                 />
               </label>
               <label className="sx-cell p-2.5 flex items-center justify-between cursor-pointer">
-                <span className="font-medium text-[#e2e8f0]">Isolation &amp; Confinement Strain</span>
+                <span className="font-medium text-[#1e293b]">Isolation &amp; Confinement Strain</span>
                 <input
                   type="checkbox"
                   checked={checkin.isolation_stress}
@@ -204,9 +204,9 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
                   setSaving(false);
                 }
               }}
-              className="flex flex-col gap-2 pt-2 border-t border-[#1d2636]"
+              className="flex flex-col gap-2 pt-2 border-t border-[#cbd5e1]"
             >
-              <label className="font-semibold text-[#cbd5e1]">Save Mental Health Journal Entry</label>
+              <label className="font-semibold text-[#1e293b]">Save Mental Health Journal Entry</label>
               <textarea
                 rows={2}
                 value={journalNote}
@@ -222,7 +222,7 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
                 Save Journal Entry to SQLite
               </button>
               {journalSaved && (
-                <div className="text-[11px] font-mono text-[#34d399]">■ {journalSaved}</div>
+                <div className="text-[11px] font-mono text-[#15803d]">■ {journalSaved}</div>
               )}
             </form>
           </div>
@@ -231,22 +231,22 @@ export function WellnessPage({ snapshot, onSnapshotUpdate }: WellnessPageProps) 
         {/* Evidence-Based Spaceflight Countermeasures */}
         <div className="sx-panel overflow-hidden">
           <div className="sx-panel-header px-4 py-2.5 flex items-center gap-1.5">
-            <Moon className="w-4 h-4 text-[#38bdf8]" />
-            <h2 className="text-xs font-semibold tracking-wide text-[#f8fafc]">NASA HRP Behavioral Countermeasures</h2>
+            <Moon className="w-4 h-4 text-[#93c5fd]" />
+            <h2 className="text-xs font-semibold tracking-wide text-white">NASA HRP Behavioral Countermeasures</h2>
           </div>
-          <div className="p-3.5 flex flex-col gap-2.5 text-xs text-[#cbd5e1]">
+          <div className="p-3.5 flex flex-col gap-2.5 text-xs text-[#334155]">
             <div className="sx-cell p-2.5">
-              <div className="font-semibold text-[#38bdf8] flex items-center gap-1.5">
+              <div className="font-semibold text-[#0b3d91] flex items-center gap-1.5">
                 <HeartHandshake className="w-3.5 h-3.5" />
                 <span>Circadian Light Hygiene (480nm / 2700K)</span>
               </div>
-              <p className="mt-1 text-[11px] text-[#94a3b8]">
+              <p className="mt-1 text-[11px] text-[#475569]">
                 Without 24h Earth sunrise cycles, shift cabin LEDs to blue-enriched white during wake blocks and warm amber 90 min before sleep.
               </p>
             </div>
             <div className="sx-cell p-2.5">
-              <div className="font-semibold text-[#38bdf8]">Earth-Out-of-View Isolation Mitigation</div>
-              <p className="mt-1 text-[11px] text-[#94a3b8]">
+              <div className="font-semibold text-[#0b3d91]">Earth-Out-of-View Isolation Mitigation</div>
+              <p className="mt-1 text-[11px] text-[#475569]">
                 One-way delay ({snapshot.environment_profile.comm_delay}) prevents live phone calls. Record asynchronous video letters &amp; preserve protected crew social meals.
               </p>
             </div>

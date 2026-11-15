@@ -37,7 +37,9 @@ Designed for environments where communication latency to Earth Flight Surgeons e
 
 ## Working With Your Own Datasets
 
-1. **Via the Workstation UI**: Open the **Mission Data** tab (`#deploy`), select the dataset type (`NASA Radiation`, `OSD-195`, `MIMIC-III LABEVENTS.csv`, `D_LABITEMS.csv`, or `simulation_feed.csv`), and upload your file. The Python backend cleans sentinels (`-9999` / `NaN`), runs forward/backward imputation, rebuilds the synchronized feed, and streams your data live.
+The workstation ships pre-loaded with the **156-tick synchronized real dataset** (`data/simulation_feed.csv`, 88 channels combining NASA ICARTT `P01`/`ARML3dr`, NASA OSD-195 `genetic_atrophy_baseline = 2.6954x`, and MIMIC-III blood gas & metabolic ICU labs including `pO2`, `Glucose`, `Temperature`, `Lactate`, `Cortisol`, `CRP`, `Hemoglobin`, and `WBC`).
+
+1. **Via the Workstation UI**: Open the **Mission Data** tab (`#deploy`), select the dataset type (`NASA Radiation`, `OSD-195`, `MIMIC-III LABEVENTS.csv`, `D_LABITEMS.csv`, or `simulation_feed.csv`), and upload your file. The Python backend cleans sentinels (`-9999` / `NaN`), runs forward/backward imputation, converts arterial `pO2` to `SpO2` via the Severinghaus curve when needed, rebuilds the synchronized feed, and streams your data live.
 2. **Via Local Folders**: Place your files into `data/radiation/`, `data/osd195/`, and `data/mimic/`, then click **Re-Clean & Sync Local Datasets** in the app (or run `python deliverables/clean_and_merge.py` if Pandas is installed).
 
 ---

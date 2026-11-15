@@ -2,16 +2,16 @@
 
 @layer base {
   :root {
-    --font-sans: "Bahnschrift", "DIN Alternate", "Franklin Gothic Medium", "Segoe UI", system-ui, -apple-system, sans-serif;
-    --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Mono", "Consolas", ui-monospace, monospace;
+    --font-sans: "Verdana", "Tahoma", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "Consolas", "Lucida Console", "Courier New", ui-monospace, monospace;
   }
 
   html,
   body {
-    background-color: #06080d;
-    color: #e2e8f0;
+    background-color: #e8eef5;
+    color: #0f172a;
     font-family: var(--font-sans);
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
   }
 
   .font-mono {
@@ -22,88 +22,90 @@
   input,
   select,
   textarea {
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
 
-/* SpaceX Flight-Deck Surface System — Flat Matte Precision, Zero Circles */
+/* Classic NASA Mission Control Surface System — High-Contrast Steel/Blue/Red, Zero Circles */
 .sx-panel {
-  background-color: #0c1017;
-  border: 1px solid #1d2636;
+  background-color: #ffffff;
+  border: 1px solid #9cb0c9;
+  box-shadow: 0 1px 2px rgba(11, 61, 145, 0.08);
 }
 
 .sx-panel-header {
-  background-color: #101621;
-  border-bottom: 1px solid #1d2636;
-  color: #f1f5f9;
+  background-color: #0b3d91;
+  border-bottom: 2px solid #fc3d21;
+  color: #ffffff;
 }
 
 .sx-cell {
-  background-color: #080b11;
-  border: 1px solid #1a2333;
+  background-color: #f3f6fa;
+  border: 1px solid #b6c6d8;
 }
 
 .sx-input {
-  background-color: #070a10;
-  border: 1px solid #263347;
-  color: #f8fafc;
+  background-color: #ffffff;
+  border: 1px solid #8ea4bf;
+  color: #0f172a;
 }
 
 .sx-input:focus {
   outline: none;
-  border-color: #38bdf8;
+  border-color: #0b3d91;
+  box-shadow: 0 0 0 1px #0b3d91;
 }
 
 .sx-btn {
-  background-color: #121925;
-  border: 1px solid #28364c;
-  color: #e2e8f0;
+  background-color: #edf2f8;
+  border: 1px solid #8ea4bf;
+  color: #0f2942;
   transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
 .sx-btn:hover:not(:disabled) {
-  background-color: #192334;
-  border-color: #38bdf8;
-  color: #ffffff;
+  background-color: #dbe6f4;
+  border-color: #0b3d91;
+  color: #0b3d91;
 }
 
 .sx-btn-primary {
-  background-color: #0369a1;
-  border: 1px solid #0ea5e9;
+  background-color: #0b3d91;
+  border: 1px solid #072a66;
   color: #ffffff;
   transition: background-color 140ms ease, border-color 140ms ease;
 }
 
 .sx-btn-primary:hover:not(:disabled) {
-  background-color: #0284c7;
-  border-color: #38bdf8;
+  background-color: #1352b8;
+  border-color: #0b3d91;
 }
 
 /* Rectangular Range Slider — Zero Circles */
 input[type="range"].square-slider {
   -webkit-appearance: none;
   appearance: none;
-  height: 4px;
-  background: #1e293b;
-  border: 1px solid #334155;
+  height: 5px;
+  background: #cbd5e1;
+  border: 1px solid #8ea4bf;
 }
 
 input[type="range"].square-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 10px;
-  height: 16px;
-  background: #38bdf8;
-  border: 1px solid #0f172a;
+  width: 11px;
+  height: 17px;
+  background: #0b3d91;
+  border: 1px solid #fc3d21;
   border-radius: 0;
   cursor: pointer;
 }
 
 input[type="range"].square-slider::-moz-range-thumb {
-  width: 10px;
-  height: 16px;
-  background: #38bdf8;
-  border: 1px solid #0f172a;
+  width: 11px;
+  height: 17px;
+  background: #0b3d91;
+  border: 1px solid #fc3d21;
   border-radius: 0;
   cursor: pointer;
 }

@@ -195,19 +195,19 @@ export default function App() {
   const news2 = snapshot.news2 ?? { total_score: 0, acuity_tier: 'NOMINAL' };
 
   return (
-    <div className="min-h-screen bg-[#06080d] text-[#e2e8f0] flex flex-col">
-      {/* SpaceX Flight-Deck Top Bar — Single Row 3-Zone Operational Contract */}
-      <header className="sticky top-0 z-30 bg-[#090c12] border-b border-[#1d2636] px-6 py-2.5 flex items-center justify-between gap-6">
+    <div className="min-h-screen bg-[#e8eef5] text-[#0f172a] flex flex-col">
+      {/* Classic NASA Mission Control Top Bar */}
+      <header className="sticky top-0 z-30 bg-[#0b3d91] border-b-2 border-[#fc3d21] px-6 py-2.5 flex items-center justify-between gap-6">
         <a
           href="#overview"
           onClick={(e) => {
             e.preventDefault();
             navigate('overview');
           }}
-          className="text-base font-semibold tracking-wider text-[#f8fafc] whitespace-nowrap shrink-0 flex items-center gap-2"
+          className="text-base font-bold tracking-wider text-white whitespace-nowrap shrink-0 flex items-center gap-2"
         >
-          <span className="inline-block w-2 h-2 bg-[#38bdf8]" aria-hidden="true" />
-          <span>AstroHealth</span>
+          <span className="inline-block w-2.5 h-2.5 bg-[#fc3d21] border border-white" aria-hidden="true" />
+          <span>ASTROHEALTH</span>
         </a>
 
         <nav className="hidden lg:flex items-center gap-5 text-xs font-medium">
@@ -220,8 +220,8 @@ export default function App() {
                 onClick={() => navigate(page.id)}
                 className={`py-1 border-b-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                   active
-                    ? 'border-[#38bdf8] text-[#f8fafc] font-semibold'
-                    : 'border-transparent text-[#94a3b8] hover:text-[#f8fafc]'
+                    ? 'border-[#fc3d21] text-white font-bold'
+                    : 'border-transparent text-[#cbd5e1] hover:text-white'
                 }`}
               >
                 {page.label}
@@ -233,15 +233,15 @@ export default function App() {
         <a
           href="/api/report/export"
           download="astrohealth_downlink_report.json"
-          className="sx-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap shrink-0"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap shrink-0 bg-[#072a66] border border-[#60a5fa] text-white hover:bg-[#1352b8]"
         >
-          <Download className="w-3.5 h-3.5 text-[#38bdf8]" />
+          <Download className="w-3.5 h-3.5 text-[#93c5fd]" />
           <span>Export Report</span>
         </a>
       </header>
 
       {/* Compact Mobile/Tablet Page Switcher (< lg) */}
-      <div className="lg:hidden bg-[#0c1017] border-b border-[#1d2636] px-4 py-1.5 flex overflow-x-auto gap-1.5">
+      <div className="lg:hidden bg-[#dce5f0] border-b border-[#9cb0c9] px-4 py-1.5 flex overflow-x-auto gap-1.5">
         {NAV_PAGES.map((page) => {
           const active = activePage === page.id;
           return (
@@ -251,8 +251,8 @@ export default function App() {
               onClick={() => navigate(page.id)}
               className={`px-2.5 py-1 text-xs whitespace-nowrap shrink-0 border cursor-pointer ${
                 active
-                  ? 'bg-[#0a1c2e] text-[#38bdf8] border-[#38bdf8] font-semibold'
-                  : 'bg-[#080b11] text-[#94a3b8] border-[#1d2636]'
+                  ? 'bg-[#0b3d91] text-white border-[#fc3d21] font-semibold'
+                  : 'bg-white text-[#0f2942] border-[#9cb0c9]'
               }`}
             >
               {page.label}
@@ -262,34 +262,34 @@ export default function App() {
       </div>
 
       {/* Mission Telemetry, Python Engine & Downlink Status Bar */}
-      <div className="bg-[#080b11] border-b border-[#1d2636] px-6 py-1.5 text-xs font-mono text-[#94a3b8] flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-[#d7e1ee] border-b border-[#9cb0c9] px-6 py-1.5 text-xs font-mono text-[#1e3a5f] flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          <span className={wsConnected ? 'text-[#34d399] font-semibold' : 'text-[#f59e0b] font-semibold'}>
+          <span className={wsConnected ? 'text-[#15803d] font-bold' : 'text-[#b45309] font-bold'}>
             {wsConnected
               ? `■ ${snapshot.backend_engine?.runtime ?? 'Python'} Link Active`
               : '▲ Reconnecting Link'}
           </span>
-          <span aria-hidden="true" className="text-[#334155]">·</span>
-          <span className="text-[#cbd5e1]">{snapshot.environment_profile.label}</span>
-          <span aria-hidden="true" className="text-[#334155]">·</span>
+          <span aria-hidden="true" className="text-[#7c93b0]">·</span>
+          <span className="text-[#0f2942] font-semibold">{snapshot.environment_profile.label}</span>
+          <span aria-hidden="true" className="text-[#7c93b0]">·</span>
           <span>MET T+{snapshot.timestamp.toFixed(0)}s</span>
-          <span aria-hidden="true" className="text-[#334155]">·</span>
+          <span aria-hidden="true" className="text-[#7c93b0]">·</span>
           <span>Dose {snapshot.cumulative_dose_msv.toFixed(2)} / 250 mSv</span>
-          <span aria-hidden="true" className="text-[#334155]">·</span>
+          <span aria-hidden="true" className="text-[#7c93b0]">·</span>
           <span
             className={
               news2.acuity_tier === 'EMERGENCY'
-                ? 'text-[#ef4444] font-semibold'
+                ? 'text-[#dc2626] font-bold'
                 : news2.acuity_tier === 'URGENT'
-                ? 'text-[#f59e0b] font-semibold'
-                : 'text-[#34d399] font-semibold'
+                ? 'text-[#b45309] font-bold'
+                : 'text-[#15803d] font-bold'
             }
           >
             NEWS2 {news2.total_score} ({news2.acuity_tier})
           </span>
         </div>
 
-        <span className="text-[11px] text-[#64748b]">
+        <span className="text-[11px] text-[#475569] font-semibold">
           CDR-01 · Comm Lag {snapshot.environment_profile.comm_delay}
         </span>
       </div>

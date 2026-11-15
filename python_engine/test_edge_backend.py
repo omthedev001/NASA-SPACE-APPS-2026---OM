@@ -14,6 +14,7 @@ from edge_backend import (
     EMA_ALPHA,
     MissionDatabase,
     PythonAstroHealthEngine,
+    load_simulation_feed,
     rebuild_simulation_feed_from_raw,
 )
 
@@ -137,6 +138,24 @@ class TestAstroHealthPythonAlgorithms(unittest.TestCase):
         self.assertTrue(feed_file.exists())
         text = feed_file.read_text(encoding="utf-8")
         self.assertNotIn("-9999", text)
+
+    def test_real_88col_merged_feed_ingestion(self) -> None:
+        feed = load_simulation_feed()
+        self.assertEqual(len(feed), 156)
+        first = feed[0]
+        self.assertAlmostEqual(first["proton_flux"], 2.0, places=2)
+        self.assertAlmostEqual(first["genetic_atrophy_baseline"], 2.6954, places=3)
+        self.assertEqual(first["glucose"], 126.0)
+        self.assertEqual(first["temperature"], 38.7)
+        # pO2 = 94.0 mmHg -> Severinghaus SpO2 ~ 97.27%
+        self.assertGreater(first["spo2"], 96.5)
+        self.assertLess(first["spo2"], 98.5)
+
+        snap = self.engine.get_snapshot()
+        self.assertEqual(snap["simulator"]["total_rows"], 156)
+        self.assertAlmostEqual(snap["genetic_atrophy_baseline"], 2.6954, places=3)
+        self.assertAlmostEqual(snap["self_assessment"]["body_temp_c"], 38.7, places=1)
+        self.assertIsNotNone(snap["live_labs"]["lactate"])
 
 
 if __name__ == "__main__":

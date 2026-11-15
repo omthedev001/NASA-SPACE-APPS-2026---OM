@@ -70,11 +70,11 @@ export function TelemetryPage({
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.2fr] gap-4">
         <div className="sx-panel overflow-hidden">
           <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-            <h1 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-1.5">
-              <ShieldAlert className="w-4 h-4 text-[#f59e0b]" />
+            <h1 className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+              <ShieldAlert className="w-4 h-4 text-[#fde68a]" />
               <span>Hardware Stream Transport &amp; Fault Drills</span>
             </h1>
-            <span className="text-[11px] font-mono text-[#38bdf8]">
+            <span className="text-[11px] font-mono text-[#dbeafe]">
               Row {snapshot.simulator.current_row}/{snapshot.simulator.total_rows} · {snapshot.simulator.playing ? 'Playing' : 'Hold'}
             </span>
           </div>
@@ -119,32 +119,32 @@ export function TelemetryPage({
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#1d2636]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#cbd5e1]">
               <button
                 type="button"
                 onClick={() => onSendControl('fault_hypoxia')}
-                className="px-2 py-1.5 text-xs font-semibold bg-[#240a0c] border border-[#b91c1c] text-[#ef4444] hover:bg-[#381014] cursor-pointer"
+                className="px-2 py-1.5 text-xs font-semibold bg-[#fef2f2] border border-[#dc2626] text-[#dc2626] hover:bg-[#fee2e2] cursor-pointer"
               >
                 Inject Hypoxia
               </button>
               <button
                 type="button"
                 onClick={() => onSendControl('fault_spe')}
-                className="px-2 py-1.5 text-xs font-semibold bg-[#1f1606] border border-[#b45309] text-[#f59e0b] hover:bg-[#302109] cursor-pointer"
+                className="px-2 py-1.5 text-xs font-semibold bg-[#fffbeb] border border-[#d97706] text-[#b45309] hover:bg-[#fef3c7] cursor-pointer"
               >
                 Inject Solar SPE
               </button>
               <button
                 type="button"
                 onClick={() => onSendControl('fault_stress')}
-                className="px-2 py-1.5 text-xs font-semibold bg-[#1f1606] border border-[#b45309] text-[#f59e0b] hover:bg-[#302109] cursor-pointer"
+                className="px-2 py-1.5 text-xs font-semibold bg-[#fffbeb] border border-[#d97706] text-[#b45309] hover:bg-[#fef3c7] cursor-pointer"
               >
                 Inject Stress
               </button>
               <button
                 type="button"
                 onClick={() => onSendControl('restore_nominal')}
-                className="px-2 py-1.5 text-xs font-semibold bg-[#071f14] border border-[#15803d] text-[#34d399] hover:bg-[#0b2e1e] cursor-pointer"
+                className="px-2 py-1.5 text-xs font-semibold bg-[#ecfdf5] border border-[#16a34a] text-[#15803d] hover:bg-[#d1fae5] cursor-pointer"
               >
                 Restore Nominal
               </button>
@@ -155,16 +155,16 @@ export function TelemetryPage({
         {/* Manual Hardware Telemetry Packet Injector */}
         <div className="sx-panel overflow-hidden">
           <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-            <h2 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-1.5">
-              <Radio className="w-4 h-4 text-[#38bdf8]" />
+            <h2 className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+              <Radio className="w-4 h-4 text-[#93c5fd]" />
               <span>Direct Sensor Packet Injector (POST /ingest/vitals &amp; /ingest/radiation)</span>
             </h2>
-            <span className="text-[11px] font-mono text-[#94a3b8]">Python Validation</span>
+            <span className="text-[11px] font-mono text-[#dbeafe]">Python Validation</span>
           </div>
           <form onSubmit={injectSensorPacket} className="p-3.5 flex flex-col gap-2.5 text-xs">
             <div className="grid grid-cols-3 gap-2.5">
               <label className="flex flex-col gap-1">
-                <span className="font-semibold text-[#cbd5e1]">Raw SpO2 (%)</span>
+                <span className="font-semibold text-[#1e293b]">Raw SpO2 (%)</span>
                 <input
                   type="number"
                   step="0.1"
@@ -176,7 +176,7 @@ export function TelemetryPage({
                 />
               </label>
               <label className="flex flex-col gap-1">
-                <span className="font-semibold text-[#cbd5e1]">Raw HR (bpm)</span>
+                <span className="font-semibold text-[#1e293b]">Raw HR (bpm)</span>
                 <input
                   type="number"
                   step="1"
@@ -188,7 +188,7 @@ export function TelemetryPage({
                 />
               </label>
               <label className="flex flex-col gap-1">
-                <span className="font-semibold text-[#cbd5e1]">Proton Flux (pfu)</span>
+                <span className="font-semibold text-[#1e293b]">Proton Flux (pfu)</span>
                 <input
                   type="number"
                   step="0.1"
@@ -204,7 +204,7 @@ export function TelemetryPage({
                 Transmit Packet to Python Engine
               </button>
               {injectStatus && (
-                <span className="text-[11px] font-mono text-[#34d399]">{injectStatus}</span>
+                <span className="text-[11px] font-mono text-[#15803d]">{injectStatus}</span>
               )}
             </div>
           </form>
@@ -214,11 +214,11 @@ export function TelemetryPage({
       {/* All 7 Scientific Charts + Sample Table */}
       <div className="sx-panel overflow-hidden">
         <div className="sx-panel-header px-4 py-2.5 flex items-center justify-between">
-          <h2 className="text-xs font-semibold tracking-wide text-[#f8fafc] flex items-center gap-1.5">
-            <Activity className="w-4 h-4 text-[#38bdf8]" />
+          <h2 className="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+            <Activity className="w-4 h-4 text-[#93c5fd]" />
             <span>Scientific Telemetry Plots (7 Live Figures) &amp; Synchronized Log</span>
           </h2>
-          <span className="text-[11px] font-mono text-[#94a3b8]">Hover Fig 1 or Fig 2 to inspect samples</span>
+          <span className="text-[11px] font-mono text-[#dbeafe]">Hover Fig 1 or Fig 2 to inspect samples</span>
         </div>
         <div className="p-4">
           <TelemetryCharts snapshot={snapshot} />

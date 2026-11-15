@@ -438,30 +438,110 @@ def get_dataset_inventory(data_dir: Path = DATA_DIR) -> Dict[str, Any]:
     }
 
 
-def load_simulation_feed() -> List[Dict[str, float]]:
+def _row_num(lower_row: Dict[str, Any], *keys: str) -> Optional[float]:
+    for key in keys:
+        val = _safe_float(lower_row.get(key.lower()))
+        if val is not None:
+            return val
+    return None
+
+
+def _po2_to_spo2_severinghaus(po2_mmhg: float) -> float:
+    """Severinghaus (1979) arterial O2-hemoglobin dissociation conversion."""
+    p = max(10.0, po2_mmhg)
+    sat = 100.0 / (1.0 + (23400.0 / ((p ** 3) + (150.0 * p))))
+    return round(min(100.0, max(50.0, sat)), 2)
+
+
+def load_simulation_feed() -> List[Dict[str, Any]]:
     if not FEED_CSV_PATH.exists():
         return []
-    rows: List[Dict[str, float]] = []
+    rows: List[Dict[str, Any]] = []
     with FEED_CSV_PATH.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
-        for row in reader:
-            try:
-                rows.append(
-                    {
-                        "sim_tick": float(row.get("sim_tick", 0)),
-                        "julian_date": float(row.get("julian_date", 2461359.5)),
-                        "proton_flux": float(row.get("proton_flux", 1.24)),
-                        "ambient_dose": float(row.get("ambient_dose", 0.41)),
-                        "heart_rate": float(row.get("heart_rate", 72.0)),
-                        "spo2": float(row.get("spo2", 98.0)),
-                        "lactate": float(row.get("lactate", 1.1)),
-                        "genetic_atrophy_baseline": float(
-                            row.get("genetic_atrophy_baseline", GENETIC_ATROPHY_BASELINE)
-                        ),
-                    }
+        for idx, row in enumerate(reader):
+            lower_row = {
+                str(k).strip().lower(): v
+                for k, v in row.items()
+                if k is not None
+            }
+            sim_tick = _row_num(lower_row, "sim_tick", "tick")
+            if sim_tick is None:
+                sim_tick = float(idx)
+            julian_date = _row_num(lower_row, "julian_date", "start_utc")
+            if julian_date is None:
+                julian_date = round(2461359.5 + (sim_tick * 0.00001), 5)
+
+            proton_flux = _row_num(lower_row, "proton_flux", "p01", "flux")
+            if proton_flux is None:
+                proton_flux = 1.24
+
+            ambient_dose = _row_num(lower_row, "ambient_dose", "arml3dr", "dose_rate")
+            if ambient_dose is None:
+                ambient_dose = 0.41
+
+            po2 = _row_num(lower_row, "po2")
+            pco2 = _row_num(lower_row, "pco2")
+            ph_val = _row_num(lower_row, "ph")
+            lactate = _row_num(lower_row, "lactate")
+            if lactate is None:
+                lactate = 1.1
+
+            glucose = _row_num(lower_row, "glucose", "blood_sugar_mg_dl")
+            temperature = _row_num(lower_row, "temperature", "body_temp_c")
+            cortisol = _row_num(lower_row, "cortisol")
+            crp = _row_num(lower_row, "c-reactive protein", "crp")
+            hemoglobin = _row_num(lower_row, "hemoglobin")
+            wbc = _row_num(lower_row, "white blood cells", "wbc")
+            sodium = _row_num(lower_row, "sodium")
+            potassium = _row_num(lower_row, "potassium")
+
+            spo2 = _row_num(lower_row, "spo2", "oxygen saturation", "o2sat")
+            if spo2 is None:
+                if po2 is not None and po2 > 0:
+                    spo2 = _po2_to_spo2_severinghaus(po2)
+                else:
+                    spo2 = 98.0
+
+            heart_rate = _row_num(lower_row, "heart_rate", "heart rate", "hr", "pulse")
+            if heart_rate is None:
+                temp_c = temperature if temperature is not None else 37.0
+                cort_v = cortisol if cortisol is not None else 18.0
+                derived_hr = (
+                    70.0
+                    + max(0.0, temp_c - 37.0) * 10.0
+                    + max(0.0, lactate - 1.5) * 4.5
+                    + max(0.0, cort_v - 20.0) * 0.15
                 )
-            except (TypeError, ValueError):
-                continue
+                heart_rate = round(min(145.0, max(55.0, derived_hr)), 1)
+
+            baseline = _row_num(lower_row, "genetic_atrophy_baseline")
+            if baseline is None or baseline <= 0:
+                baseline = GENETIC_ATROPHY_BASELINE
+
+            rows.append(
+                {
+                    "sim_tick": float(sim_tick),
+                    "julian_date": float(julian_date),
+                    "proton_flux": round(max(0.0, float(proton_flux)), 3),
+                    "ambient_dose": round(max(0.0, float(ambient_dose)), 3),
+                    "heart_rate": round(float(heart_rate), 1),
+                    "spo2": round(min(100.0, max(50.0, float(spo2))), 2),
+                    "lactate": round(float(lactate), 2),
+                    "glucose": round(float(glucose), 1) if glucose is not None else None,
+                    "temperature": round(float(temperature), 1) if temperature is not None else None,
+                    "cortisol": round(float(cortisol), 1) if cortisol is not None else None,
+                    "crp": round(float(crp), 2) if crp is not None else None,
+                    "hemoglobin": round(float(hemoglobin), 1) if hemoglobin is not None else None,
+                    "wbc": round(float(wbc), 1) if wbc is not None else None,
+                    "po2": round(float(po2), 1) if po2 is not None else None,
+                    "pco2": round(float(pco2), 1) if pco2 is not None else None,
+                    "ph": round(float(ph_val), 2) if ph_val is not None else None,
+                    "sodium": round(float(sodium), 1) if sodium is not None else None,
+                    "potassium": round(float(potassium), 2) if potassium is not None else None,
+                    "genetic_atrophy_baseline": round(float(baseline), 4),
+                }
+            )
     return rows
 
 
@@ -827,6 +907,19 @@ class PythonAstroHealthEngine:
             "diastolic_bp": 76,
             "blood_sugar_mg_dl": 94,
             "body_temp_c": 36.8,
+        }
+        self.manual_vitals_override: bool = False
+        self.live_labs: Dict[str, Optional[float]] = {
+            "lactate": 1.1,
+            "cortisol": None,
+            "crp": None,
+            "hemoglobin": None,
+            "wbc": None,
+            "po2": None,
+            "pco2": None,
+            "ph": None,
+            "sodium": None,
+            "potassium": None,
         }
 
         if self.db is not None:
@@ -1227,6 +1320,24 @@ class PythonAstroHealthEngine:
             row = self.feed_rows[self.sim_index % len(self.feed_rows)]
             if row["genetic_atrophy_baseline"] > 0:
                 self.genetic_atrophy_baseline = row["genetic_atrophy_baseline"]
+            for lab_key in (
+                "lactate",
+                "cortisol",
+                "crp",
+                "hemoglobin",
+                "wbc",
+                "po2",
+                "pco2",
+                "ph",
+                "sodium",
+                "potassium",
+            ):
+                self.live_labs[lab_key] = row.get(lab_key)
+            if not self.manual_vitals_override:
+                if row.get("glucose") is not None:
+                    self.self_assessment["blood_sugar_mg_dl"] = int(round(float(row["glucose"])))
+                if row.get("temperature") is not None:
+                    self.self_assessment["body_temp_c"] = round(float(row["temperature"]), 1)
             self.ingest_radiation(
                 sensor_id="RAD-DOSIMETER-BAY1",
                 timestamp=row["sim_tick"],
@@ -1262,6 +1373,7 @@ class PythonAstroHealthEngine:
 
     def set_self_assessment(self, data: Dict[str, Any], notes: str = "") -> Dict[str, Any]:
         with self.lock:
+            self.manual_vitals_override = True
             for key, lo, hi, cast in (
                 ("systolic_bp", 60, 220, int),
                 ("diastolic_bp", 40, 140, int),
@@ -1470,6 +1582,7 @@ class PythonAstroHealthEngine:
                 "blood_sugar_mg_dl": 94,
                 "body_temp_c": 36.8,
             }
+            self.manual_vitals_override = False
             self._persist_prefs()
             for _ in range(min(5, len(self.feed_rows))):
                 self.step_feed_row()
@@ -1520,6 +1633,7 @@ class PythonAstroHealthEngine:
                     )
             elif action == "restore_nominal":
                 self.sim_playing = False
+                self.manual_vitals_override = True
                 base_ts = self.last_timestamp
                 self.set_mental_checkin(
                     {
@@ -1549,6 +1663,7 @@ class PythonAstroHealthEngine:
         with self.lock:
             self.feed_rows = load_simulation_feed()
             self.sim_index = 0
+            self.manual_vitals_override = False
             self.ema_spo2 = None
             self.prev_ema_spo2 = None
             self.ema_heart_rate = None
@@ -1744,6 +1859,7 @@ class PythonAstroHealthEngine:
                 "mental_stress_index": mental_stress,
                 "mental_checkin": dict(self.mental_checkin),
                 "self_assessment": {**self.self_assessment, "map_mmhg": map_mmhg},
+                "live_labs": dict(self.live_labs),
                 "news2": news2,
                 "daily_logs_summary": daily_summary,
                 "environment": self.environment,
@@ -1794,6 +1910,7 @@ class PythonAstroHealthEngine:
                     "osd195_atrophy_baseline": snap["genetic_atrophy_baseline"],
                     "muscle_atrophy_risk_index": snap["muscle_atrophy_risk"],
                 },
+                "clinical_icu_labs": snap["live_labs"],
                 "behavioral_health": {
                     "mental_stress_index": snap["mental_stress_index"],
                     "sleep_hours": snap["mental_checkin"]["sleep_hours"],

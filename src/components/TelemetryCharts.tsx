@@ -51,7 +51,7 @@ function CrewRadarChart({ snapshot }: { snapshot: TelemetrySnapshot }) {
   const radScore = Math.max(0.1, Math.min(1, 1 - snapshot.radiation_flux / 20));
   const slopeScore = Math.max(0.1, Math.min(1, 1 - Math.max(0, snapshot.radiation_slope) / 4));
   const mentalScore = Math.max(0.1, Math.min(1, (100 - snapshot.mental_stress_index) / 100));
-  const muscleScore = Math.max(0.1, Math.min(1, 1 - (snapshot.muscle_atrophy_risk - 1.0) / 0.6));
+  const muscleScore = Math.max(0.1, Math.min(1, 1 - (snapshot.muscle_atrophy_risk - 1.0) / 2.2));
 
   const axes = [
     { label: 'SpO2', val: o2Score },
@@ -72,20 +72,20 @@ function CrewRadarChart({ snapshot }: { snapshot: TelemetrySnapshot }) {
 
   return (
     <div className="sx-cell p-3.5 flex flex-col gap-2">
-      <div className="flex items-center justify-between border-b border-[#1a2333] pb-1.5">
-        <h3 className="text-xs font-semibold text-[#f1f5f9]">
+      <div className="flex items-center justify-between border-b border-[#b6c6d8] pb-1.5">
+        <h3 className="text-xs font-bold text-[#0f2942]">
           Fig 3. Multi-System Readiness Radar
         </h3>
-        <span className="text-[11px] font-mono text-[#64748b]">5-Axis Normalized</span>
+        <span className="text-[11px] font-mono text-[#475569]">5-Axis Normalized</span>
       </div>
 
-      <svg viewBox="0 0 270 208" className="w-full h-44" role="img" aria-label="Crew Multi-System Radar Chart">
+      <svg viewBox="0 0 270 208" className="w-full h-44 bg-white border border-[#b6c6d8]" role="img" aria-label="Crew Multi-System Radar Chart">
         {[0.33, 0.66, 1].map((ring) => (
           <polygon
             key={ring}
             points={polygonPoints(() => ring)}
             fill="none"
-            stroke="#1e293b"
+            stroke="#cbd5e1"
             strokeWidth="1"
           />
         ))}
@@ -97,12 +97,12 @@ function CrewRadarChart({ snapshot }: { snapshot: TelemetrySnapshot }) {
           const ly = cy + (radius + 16) * Math.sin(angle);
           return (
             <g key={ax.label}>
-              <line x1={cx} y1={cy} x2={x2} y2={y2} stroke="#1e293b" strokeWidth="1" />
+              <line x1={cx} y1={cy} x2={x2} y2={y2} stroke="#cbd5e1" strokeWidth="1" />
               <text
                 x={lx}
                 y={ly + 3}
                 textAnchor="middle"
-                fill="#94a3b8"
+                fill="#0f2942"
                 fontSize="9"
                 fontWeight="700"
                 className="font-mono"
@@ -115,13 +115,13 @@ function CrewRadarChart({ snapshot }: { snapshot: TelemetrySnapshot }) {
 
         <polygon
           points={polygonPoints((i) => axes[i].val)}
-          fill="rgba(56, 189, 248, 0.18)"
-          stroke="#38bdf8"
+          fill="rgba(11, 61, 145, 0.2)"
+          stroke="#0b3d91"
           strokeWidth="2"
         />
       </svg>
 
-      <div className="text-[11px] font-mono text-[#64748b] flex justify-between">
+      <div className="text-[11px] font-mono text-[#475569] flex justify-between">
         <span>Outer = Optimal</span>
         <span>Inner = Degraded</span>
       </div>
@@ -130,40 +130,62 @@ function CrewRadarChart({ snapshot }: { snapshot: TelemetrySnapshot }) {
 }
 
 function GenomicExpressionChart({ baseline }: { baseline: number }) {
+  const scaleFactor = baseline > 0 ? baseline / 1.25 : 1.0;
+  const scaledGenes = OSD195_GENES.map((g) => ({
+    symbol: g.symbol,
+    value: Number((g.value * scaleFactor).toFixed(2)),
+  }));
+  const yMin = 0.8;
+  const yMax = Math.max(1.6, Number((Math.max(baseline, ...scaledGenes.map((g) => g.value)) * 1.12).toFixed(2)));
+  const ySpan = Math.max(0.4, yMax - yMin);
+  const midTick = Number((yMin + ySpan * 0.5).toFixed(2));
+  const baselineY = 140 - ((Math.min(yMax, Math.max(yMin, baseline)) - yMin) / ySpan) * 110;
+
   return (
     <div className="sx-cell p-3.5 flex flex-col gap-2">
-      <div className="flex items-center justify-between border-b border-[#1a2333] pb-1.5">
-        <h3 className="text-xs font-semibold text-[#f1f5f9]">
+      <div className="flex items-center justify-between border-b border-[#b6c6d8] pb-1.5">
+        <h3 className="text-xs font-bold text-[#0f2942]">
           Fig 4. OSD-195 RMA Gene Expression
         </h3>
-        <span className="text-[11px] font-mono text-[#64748b]">Mean = {baseline.toFixed(2)}x</span>
+        <span className="text-[11px] font-mono text-[#475569]">Mean = {baseline.toFixed(2)}x</span>
       </div>
 
-      <svg viewBox="0 0 280 176" className="w-full h-44" role="img" aria-label="OSD-195 Gene Expression Bar Chart">
-        {[1.0, 1.25, 1.5].map((tick) => {
-          const y = 140 - ((tick - 0.8) / 0.8) * 110;
+      <svg viewBox="0 0 280 176" className="w-full h-44 bg-white border border-[#b6c6d8]" role="img" aria-label="OSD-195 Gene Expression Bar Chart">
+        {[yMin, midTick, yMax].map((tick) => {
+          const y = 140 - ((tick - yMin) / ySpan) * 110;
           return (
             <g key={tick}>
-              <line x1="36" y1={y} x2="266" y2={y} stroke={tick === 1.25 ? '#f59e0b' : '#1e293b'} strokeDasharray={tick === 1.25 ? '4 3' : undefined} />
-              <text x="30" y={y + 3} textAnchor="end" fontSize="9" fill="#94a3b8" className="font-mono">
+              <line x1="36" y1={y} x2="266" y2={y} stroke="#e2e8f0" />
+              <text x="30" y={y + 3} textAnchor="end" fontSize="9" fill="#475569" className="font-mono">
                 {tick.toFixed(2)}
               </text>
             </g>
           );
         })}
 
-        {OSD195_GENES.map((g, i) => {
+        <line
+          x1="36"
+          y1={baselineY}
+          x2="266"
+          y2={baselineY}
+          stroke="#fc3d21"
+          strokeWidth="1.5"
+          strokeDasharray="4 3"
+        />
+
+        {scaledGenes.map((g, i) => {
           const barW = 24;
           const x = 48 + i * 36;
-          const h = ((g.value - 0.8) / 0.8) * 110;
+          const clampedVal = Math.min(yMax, Math.max(yMin, g.value));
+          const h = ((clampedVal - yMin) / ySpan) * 110;
           const y = 140 - h;
           return (
             <g key={g.symbol}>
-              <rect x={x} y={y} width={barW} height={h} fill={g.value >= baseline ? '#38bdf8' : '#475569'} />
-              <text x={x + barW / 2} y={y - 4} textAnchor="middle" fontSize="8" fill="#e2e8f0" className="font-mono">
+              <rect x={x} y={y} width={barW} height={h} fill={g.value >= baseline ? '#0b3d91' : '#64748b'} />
+              <text x={x + barW / 2} y={y - 4} textAnchor="middle" fontSize="8" fill="#0f172a" className="font-mono font-bold">
                 {g.value.toFixed(2)}
               </text>
-              <text x={x + barW / 2} y="156" textAnchor="middle" fontSize="8.5" fill="#94a3b8" className="font-mono">
+              <text x={x + barW / 2} y="156" textAnchor="middle" fontSize="8.5" fill="#334155" className="font-mono">
                 {g.symbol}
               </text>
             </g>
@@ -171,9 +193,9 @@ function GenomicExpressionChart({ baseline }: { baseline: number }) {
         })}
       </svg>
 
-      <div className="text-[11px] font-mono text-[#64748b] flex justify-between">
-        <span className="text-[#38bdf8]">■ Above Cohort Mean</span>
-        <span className="text-[#f59e0b]">--- Baseline {baseline.toFixed(2)}x</span>
+      <div className="text-[11px] font-mono text-[#475569] flex justify-between">
+        <span className="text-[#0b3d91] font-semibold">■ Above Cohort Mean</span>
+        <span className="text-[#fc3d21] font-semibold">--- Baseline {baseline.toFixed(2)}x</span>
       </div>
     </div>
   );
@@ -187,17 +209,22 @@ function MetabolicThermalChart({ history }: { history: HistoryPoint[] }) {
   const innerH = height - padY * 2;
   const latest = history[history.length - 1];
 
-  const gluLowY = padY + innerH - ((70 - 40) / 180) * innerH;
-  const gluHighY = padY + innerH - ((180 - 40) / 180) * innerH;
+  const gluMin = 30;
+  const gluMax = Math.max(220, ...history.map((h) => h.blood_sugar_mg_dl + 20));
+  const gluSpan = Math.max(100, gluMax - gluMin);
+
+  const gluLowY = padY + innerH - ((70 - gluMin) / gluSpan) * innerH;
+  const gluHighY = padY + innerH - ((180 - gluMin) / gluSpan) * innerH;
+  const midTick = Math.round(gluMin + gluSpan * 0.5);
 
   return (
     <div className="sx-cell p-3.5 flex flex-col gap-2">
-      <div className="flex items-center justify-between border-b border-[#1a2333] pb-1.5">
-        <h3 className="text-xs font-semibold text-[#f1f5f9]">
+      <div className="flex items-center justify-between border-b border-[#b6c6d8] pb-1.5">
+        <h3 className="text-xs font-bold text-[#0f2942]">
           Fig 5. Metabolic Glucose &amp; Core Temp
         </h3>
         {latest && (
-          <span className="text-[11px] font-mono text-[#94a3b8]">
+          <span className="text-[11px] font-mono text-[#334155] font-semibold">
             {latest.blood_sugar_mg_dl} mg/dL · {latest.body_temp_c.toFixed(1)} °C
           </span>
         )}
@@ -205,41 +232,41 @@ function MetabolicThermalChart({ history }: { history: HistoryPoint[] }) {
 
       <svg
         viewBox={`0 0 ${width} ${height}`}
-        className="w-full h-36 bg-[#06080d] border border-[#1a2333]"
+        className="w-full h-36 bg-white border border-[#b6c6d8]"
         role="img"
         aria-label="Blood Glucose and Core Temperature History"
       >
-        {[70, 120, 180].map((val) => {
-          const y = padY + innerH - ((val - 40) / 180) * innerH;
+        {[70, midTick, Math.round(gluMax)].map((val) => {
+          const y = padY + innerH - ((val - gluMin) / gluSpan) * innerH;
           return (
             <g key={val}>
-              <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#172030" strokeWidth="1" />
-              <text x={padX - 6} y={y + 3} textAnchor="end" fill="#64748b" fontSize="9" className="font-mono">
+              <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#e2e8f0" strokeWidth="1" />
+              <text x={padX - 6} y={y + 3} textAnchor="end" fill="#475569" fontSize="9" className="font-mono">
                 {val}
               </text>
             </g>
           );
         })}
 
-        <line x1={padX} y1={gluLowY} x2={width - padX} y2={gluLowY} stroke="#f59e0b" strokeDasharray="4 3" />
-        <line x1={padX} y1={gluHighY} x2={width - padX} y2={gluHighY} stroke="#ef4444" strokeDasharray="4 3" />
+        <line x1={padX} y1={gluLowY} x2={width - padX} y2={gluLowY} stroke="#d97706" strokeDasharray="4 3" />
+        <line x1={padX} y1={gluHighY} x2={width - padX} y2={gluHighY} stroke="#fc3d21" strokeDasharray="4 3" />
 
         <polyline
           fill="none"
-          stroke="#38bdf8"
+          stroke="#0b3d91"
           strokeWidth="2.1"
-          points={buildPolyline(history, (p) => p.blood_sugar_mg_dl, 40, 220, width, height, padX, padY)}
+          points={buildPolyline(history, (p) => p.blood_sugar_mg_dl, gluMin, gluMax, width, height, padX, padY)}
         />
 
         <polyline
           fill="none"
-          stroke="#ef4444"
+          stroke="#fc3d21"
           strokeWidth="1.8"
           points={buildPolyline(
             history,
-            (p) => 40 + ((p.body_temp_c - 34) / 7) * 180,
-            40,
-            220,
+            (p) => gluMin + ((p.body_temp_c - 34) / 7) * gluSpan,
+            gluMin,
+            gluMax,
             width,
             height,
             padX,
@@ -248,9 +275,9 @@ function MetabolicThermalChart({ history }: { history: HistoryPoint[] }) {
         />
       </svg>
 
-      <div className="flex items-center gap-4 text-[11px] font-mono text-[#64748b]">
-        <span className="text-[#38bdf8]">— Glucose (mg/dL)</span>
-        <span className="text-[#ef4444]">— Temp (°C scaled)</span>
+      <div className="flex items-center gap-4 text-[11px] font-mono text-[#475569]">
+        <span className="text-[#0b3d91] font-semibold">— Glucose (mg/dL)</span>
+        <span className="text-[#fc3d21] font-semibold">— Temp (°C scaled)</span>
         <span className="ml-auto">Range: 70–180</span>
       </div>
     </div>
@@ -274,18 +301,18 @@ function MentalAndDoseChart({
 
   return (
     <div className="sx-cell p-3.5 flex flex-col gap-2">
-      <div className="flex items-center justify-between border-b border-[#1a2333] pb-1.5">
-        <h3 className="text-xs font-semibold text-[#f1f5f9]">
+      <div className="flex items-center justify-between border-b border-[#b6c6d8] pb-1.5">
+        <h3 className="text-xs font-bold text-[#0f2942]">
           Fig 6. Behavioral Stress &amp; Dose Rate
         </h3>
-        <span className="text-[11px] font-mono text-[#94a3b8]">
+        <span className="text-[11px] font-mono text-[#334155] font-semibold">
           {cumulativeDose.toFixed(2)} / 250 mSv
         </span>
       </div>
 
       <svg
         viewBox={`0 0 ${width} ${height}`}
-        className="w-full h-36 bg-[#06080d] border border-[#1a2333]"
+        className="w-full h-36 bg-white border border-[#b6c6d8]"
         role="img"
         aria-label="Mental Stress Load and Ambient Dose Rate Chart"
       >
@@ -293,26 +320,26 @@ function MentalAndDoseChart({
           const y = padY + innerH - (val / 100) * innerH;
           return (
             <g key={val}>
-              <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#172030" strokeWidth="1" />
-              <text x={padX - 6} y={y + 3} textAnchor="end" fill="#64748b" fontSize="9" className="font-mono">
+              <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#e2e8f0" strokeWidth="1" />
+              <text x={padX - 6} y={y + 3} textAnchor="end" fill="#475569" fontSize="9" className="font-mono">
                 {val}
               </text>
             </g>
           );
         })}
 
-        <line x1={padX} y1={stressLimitY} x2={width - padX} y2={stressLimitY} stroke="#f59e0b" strokeDasharray="4 3" />
+        <line x1={padX} y1={stressLimitY} x2={width - padX} y2={stressLimitY} stroke="#d97706" strokeDasharray="4 3" />
 
         <polyline
           fill="none"
-          stroke="#f59e0b"
+          stroke="#d97706"
           strokeWidth="2.1"
           points={buildPolyline(history, (p) => p.mental_stress_index, 0, 100, width, height, padX, padY)}
         />
 
         <polyline
           fill="none"
-          stroke="#34d399"
+          stroke="#15803d"
           strokeWidth="1.8"
           points={buildPolyline(
             history,
@@ -327,10 +354,10 @@ function MentalAndDoseChart({
         />
       </svg>
 
-      <div className="flex items-center gap-4 text-[11px] font-mono text-[#64748b]">
-        <span className="text-[#f59e0b]">— Stress (/100)</span>
-        <span className="text-[#34d399]">— Dose (mSv/d)</span>
-        {latest && <span className="ml-auto">Now: {latest.mental_stress_index.toFixed(1)}</span>}
+      <div className="flex items-center gap-4 text-[11px] font-mono text-[#475569]">
+        <span className="text-[#b45309] font-semibold">— Stress (/100)</span>
+        <span className="text-[#15803d] font-semibold">— Dose (mSv/d)</span>
+        {latest && <span className="ml-auto font-semibold">Now: {latest.mental_stress_index.toFixed(1)}</span>}
       </div>
     </div>
   );
@@ -348,12 +375,12 @@ function BloodPressureMapChart({ history }: { history: HistoryPoint[] }) {
 
   return (
     <div className="sx-cell p-3.5 flex flex-col gap-2 lg:col-span-2">
-      <div className="flex items-center justify-between border-b border-[#1a2333] pb-1.5">
-        <h3 className="text-xs font-semibold text-[#f1f5f9]">
+      <div className="flex items-center justify-between border-b border-[#b6c6d8] pb-1.5">
+        <h3 className="text-xs font-bold text-[#0f2942]">
           Fig 7. Arterial Blood Pressure &amp; Mean Arterial Pressure (MAP)
         </h3>
         {latest && (
-          <span className="text-[11px] font-mono text-[#94a3b8]">
+          <span className="text-[11px] font-mono text-[#334155] font-semibold">
             {latest.systolic_bp ?? 118}/{latest.diastolic_bp ?? 76} mmHg · MAP {(latest.map_mmhg ?? 90).toFixed(1)} mmHg
           </span>
         )}
@@ -361,7 +388,7 @@ function BloodPressureMapChart({ history }: { history: HistoryPoint[] }) {
 
       <svg
         viewBox={`0 0 ${width} ${height}`}
-        className="w-full h-36 bg-[#06080d] border border-[#1a2333]"
+        className="w-full h-36 bg-white border border-[#b6c6d8]"
         role="img"
         aria-label="Arterial Systolic, Diastolic, and Mean Arterial Pressure Chart"
       >
@@ -369,41 +396,41 @@ function BloodPressureMapChart({ history }: { history: HistoryPoint[] }) {
           const y = padY + innerH - ((val - 40) / 140) * innerH;
           return (
             <g key={val}>
-              <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#172030" strokeWidth="1" />
-              <text x={padX - 6} y={y + 3} textAnchor="end" fill="#64748b" fontSize="9" className="font-mono">
+              <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#e2e8f0" strokeWidth="1" />
+              <text x={padX - 6} y={y + 3} textAnchor="end" fill="#475569" fontSize="9" className="font-mono">
                 {val}
               </text>
             </g>
           );
         })}
 
-        <line x1={padX} y1={highBpY} x2={width - padX} y2={highBpY} stroke="#ef4444" strokeDasharray="4 3" />
-        <line x1={padX} y1={lowBpY} x2={width - padX} y2={lowBpY} stroke="#f59e0b" strokeDasharray="4 3" />
+        <line x1={padX} y1={highBpY} x2={width - padX} y2={highBpY} stroke="#fc3d21" strokeDasharray="4 3" />
+        <line x1={padX} y1={lowBpY} x2={width - padX} y2={lowBpY} stroke="#d97706" strokeDasharray="4 3" />
 
         <polyline
           fill="none"
-          stroke="#ef4444"
+          stroke="#fc3d21"
           strokeWidth="2.0"
           points={buildPolyline(history, (p) => p.systolic_bp ?? 118, 40, 180, width, height, padX, padY)}
         />
         <polyline
           fill="none"
-          stroke="#38bdf8"
+          stroke="#0b3d91"
           strokeWidth="2.0"
           points={buildPolyline(history, (p) => p.map_mmhg ?? 90, 40, 180, width, height, padX, padY)}
         />
         <polyline
           fill="none"
-          stroke="#34d399"
+          stroke="#15803d"
           strokeWidth="1.8"
           points={buildPolyline(history, (p) => p.diastolic_bp ?? 76, 40, 180, width, height, padX, padY)}
         />
       </svg>
 
-      <div className="flex flex-wrap items-center gap-4 text-[11px] font-mono text-[#64748b]">
-        <span className="text-[#ef4444]">— Systolic BP</span>
-        <span className="text-[#38bdf8]">— MAP (DBP + ⅓·PP)</span>
-        <span className="text-[#34d399]">— Diastolic BP</span>
+      <div className="flex flex-wrap items-center gap-4 text-[11px] font-mono text-[#475569]">
+        <span className="text-[#dc2626] font-semibold">— Systolic BP</span>
+        <span className="text-[#0b3d91] font-semibold">— MAP (DBP + ⅓·PP)</span>
+        <span className="text-[#15803d] font-semibold">— Diastolic BP</span>
         <span className="ml-auto">Limits: Sys &gt;= 140 or &lt; 90</span>
       </div>
     </div>
@@ -458,12 +485,12 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="sx-cell p-3.5 flex flex-col gap-2">
-          <div className="flex items-center justify-between gap-2 border-b border-[#1a2333] pb-1.5">
-            <h3 className="text-xs font-semibold text-[#f1f5f9]">
+          <div className="flex items-center justify-between gap-2 border-b border-[#b6c6d8] pb-1.5">
+            <h3 className="text-xs font-bold text-[#0f2942]">
               Fig 1. Physiological EMA (SpO2 &amp; HR)
             </h3>
             {activePoint && (
-              <span className="text-[11px] font-mono text-[#94a3b8]">
+              <span className="text-[11px] font-mono text-[#334155] font-semibold">
                 T+{activePoint.timestamp.toFixed(0)}s · {activePoint.ema_spo2.toFixed(1)}% · {activePoint.ema_hr.toFixed(0)} bpm
               </span>
             )}
@@ -471,7 +498,7 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
 
           <svg
             viewBox={`0 0 ${width} ${height}`}
-            className="w-full h-36 cursor-crosshair overflow-visible bg-[#06080d] border border-[#1a2333]"
+            className="w-full h-36 cursor-crosshair overflow-visible bg-white border border-[#b6c6d8]"
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setHoverIdx(null)}
             role="img"
@@ -481,8 +508,8 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
               const y = padY + innerH - ((val - spo2Min) / (spo2Max - spo2Min)) * innerH;
               return (
                 <g key={val}>
-                  <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#172030" strokeWidth="1" />
-                  <text x={padX - 6} y={y + 3} textAnchor="end" fill="#64748b" fontSize="9" className="font-mono">
+                  <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#e2e8f0" strokeWidth="1" />
+                  <text x={padX - 6} y={y + 3} textAnchor="end" fill="#475569" fontSize="9" className="font-mono">
                     {val}%
                   </text>
                 </g>
@@ -494,14 +521,14 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
               y1={spo2ThresholdY}
               x2={width - padX}
               y2={spo2ThresholdY}
-              stroke="#ef4444"
+              stroke="#fc3d21"
               strokeWidth="1.2"
               strokeDasharray="4 3"
             />
 
             <polyline
               fill="none"
-              stroke="#64748b"
+              stroke="#94a3b8"
               strokeWidth="1.3"
               strokeDasharray="3 3"
               points={buildPolyline(history, (p) => p.raw_spo2, spo2Min, spo2Max, width, height, padX, padY)}
@@ -509,14 +536,14 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
 
             <polyline
               fill="none"
-              stroke="#34d399"
+              stroke="#15803d"
               strokeWidth="2.2"
               points={buildPolyline(history, (p) => p.ema_spo2, spo2Min, spo2Max, width, height, padX, padY)}
             />
 
             <polyline
               fill="none"
-              stroke="#f59e0b"
+              stroke="#d97706"
               strokeWidth="1.6"
               points={buildPolyline(
                 history,
@@ -536,28 +563,28 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
                 y1={padY}
                 x2={crosshairX}
                 y2={height - padY}
-                stroke="#38bdf8"
+                stroke="#0b3d91"
                 strokeWidth="1"
                 strokeDasharray="2 2"
               />
             )}
           </svg>
 
-          <div className="flex items-center gap-4 text-[11px] font-mono text-[#64748b]">
-            <span className="text-[#34d399]">— EMA SpO2</span>
-            <span className="text-[#94a3b8]">--- Raw SpO2</span>
-            <span className="text-[#f59e0b]">— EMA HR</span>
-            <span className="text-[#ef4444] ml-auto">Hypoxia &lt;90%</span>
+          <div className="flex items-center gap-4 text-[11px] font-mono text-[#475569]">
+            <span className="text-[#15803d] font-semibold">— EMA SpO2</span>
+            <span className="text-[#64748b]">--- Raw SpO2</span>
+            <span className="text-[#b45309] font-semibold">— EMA HR</span>
+            <span className="text-[#dc2626] font-semibold ml-auto">Hypoxia &lt;90%</span>
           </div>
         </div>
 
         <div className="sx-cell p-3.5 flex flex-col gap-2">
-          <div className="flex items-center justify-between gap-2 border-b border-[#1a2333] pb-1.5">
-            <h3 className="text-xs font-semibold text-[#f1f5f9]">
+          <div className="flex items-center justify-between gap-2 border-b border-[#b6c6d8] pb-1.5">
+            <h3 className="text-xs font-bold text-[#0f2942]">
               Fig 2. Solar Proton Flux &amp; dΦ/dt Slope
             </h3>
             {activePoint && (
-              <span className="text-[11px] font-mono text-[#94a3b8]">
+              <span className="text-[11px] font-mono text-[#334155] font-semibold">
                 {activePoint.proton_flux.toFixed(2)} pfu · {activePoint.radiation_slope.toFixed(2)} pfu/s
               </span>
             )}
@@ -565,7 +592,7 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
 
           <svg
             viewBox={`0 0 ${width} ${height}`}
-            className="w-full h-36 cursor-crosshair overflow-visible bg-[#06080d] border border-[#1a2333]"
+            className="w-full h-36 cursor-crosshair overflow-visible bg-white border border-[#b6c6d8]"
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setHoverIdx(null)}
             role="img"
@@ -575,8 +602,8 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
               const y = padY + innerH - (val / fluxMax) * innerH;
               return (
                 <g key={i}>
-                  <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#172030" strokeWidth="1" />
-                  <text x={padX - 6} y={y + 3} textAnchor="end" fill="#64748b" fontSize="9" className="font-mono">
+                  <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="#e2e8f0" strokeWidth="1" />
+                  <text x={padX - 6} y={y + 3} textAnchor="end" fill="#475569" fontSize="9" className="font-mono">
                     {val.toFixed(0)}
                   </text>
                 </g>
@@ -588,21 +615,21 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
               y1={slopeThresholdY}
               x2={width - padX}
               y2={slopeThresholdY}
-              stroke="#f59e0b"
+              stroke="#fc3d21"
               strokeWidth="1.2"
               strokeDasharray="4 3"
             />
 
             <polyline
               fill="none"
-              stroke="#38bdf8"
+              stroke="#0b3d91"
               strokeWidth="2.2"
               points={buildPolyline(history, (p) => p.proton_flux, 0, fluxMax, width, height, padX, padY)}
             />
 
             <polyline
               fill="none"
-              stroke="#f59e0b"
+              stroke="#d97706"
               strokeWidth="1.8"
               points={buildPolyline(
                 history,
@@ -622,17 +649,17 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
                 y1={padY}
                 x2={crosshairX}
                 y2={height - padY}
-                stroke="#38bdf8"
+                stroke="#0b3d91"
                 strokeWidth="1"
                 strokeDasharray="2 2"
               />
             )}
           </svg>
 
-          <div className="flex items-center gap-4 text-[11px] font-mono text-[#64748b]">
-            <span className="text-[#38bdf8]">— Proton Flux (P01)</span>
-            <span className="text-[#f59e0b]">— 5-Pt Slope (×2)</span>
-            <span className="text-[#f59e0b] ml-auto">SPE &gt; 1.5 pfu/s</span>
+          <div className="flex items-center gap-4 text-[11px] font-mono text-[#475569]">
+            <span className="text-[#0b3d91] font-semibold">— Proton Flux (P01)</span>
+            <span className="text-[#b45309] font-semibold">— 5-Pt Slope (×2)</span>
+            <span className="text-[#dc2626] font-semibold ml-auto">SPE &gt; 1.5 pfu/s</span>
           </div>
         </div>
 
@@ -643,20 +670,68 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
         <BloodPressureMapChart history={history} />
       </div>
 
+      {/* Live MIMIC-III ICU Lab Biomarkers Strip (when present in dataset) */}
+      {snapshot.live_labs && snapshot.live_labs.lactate !== null && (
+        <div className="sx-cell p-3.5">
+          <div className="flex items-center justify-between border-b border-[#b6c6d8] pb-1.5 mb-2.5">
+            <h3 className="text-xs font-bold text-[#0f2942]">
+              Synchronized Blood Gas &amp; ICU Biomarker Panel (MIMIC-III Feed)
+            </h3>
+            <span className="text-[11px] font-mono text-[#0b3d91] font-semibold">
+              Severinghaus SpO2 · Autonomic HR Model
+            </span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 font-mono text-[11px]">
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">Lactate</div>
+              <div className="text-[#0f172a] font-bold">{snapshot.live_labs.lactate?.toFixed(1) ?? '--'} mmol/L</div>
+            </div>
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">Arterial pO2</div>
+              <div className="text-[#15803d] font-bold">{snapshot.live_labs.po2?.toFixed(0) ?? '--'} mmHg</div>
+            </div>
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">Arterial pCO2</div>
+              <div className="text-[#0f172a] font-bold">{snapshot.live_labs.pco2?.toFixed(0) ?? '--'} mmHg</div>
+            </div>
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">Arterial pH</div>
+              <div className="text-[#0f172a] font-bold">{snapshot.live_labs.ph?.toFixed(2) ?? '--'}</div>
+            </div>
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">Cortisol</div>
+              <div className="text-[#b45309] font-bold">{snapshot.live_labs.cortisol?.toFixed(1) ?? '--'} ug/dL</div>
+            </div>
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">CRP</div>
+              <div className="text-[#0f172a] font-bold">{snapshot.live_labs.crp?.toFixed(1) ?? '--'} mg/L</div>
+            </div>
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">Hemoglobin</div>
+              <div className="text-[#0f172a] font-bold">{snapshot.live_labs.hemoglobin?.toFixed(1) ?? '--'} g/dL</div>
+            </div>
+            <div className="p-2 bg-white border border-[#b6c6d8]">
+              <div className="text-[#475569]">WBC</div>
+              <div className="text-[#0b3d91] font-bold">{snapshot.live_labs.wbc?.toFixed(1) ?? '--'} K/uL</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Flight Telemetry Sample Log Table */}
       <div className="sx-cell overflow-hidden">
-        <div className="px-3.5 py-2 bg-[#101621] border-b border-[#1d2636] flex items-center justify-between">
-          <h3 className="text-xs font-semibold text-[#f1f5f9]">
+        <div className="px-3.5 py-2 bg-[#0b3d91] border-b-2 border-[#fc3d21] flex items-center justify-between">
+          <h3 className="text-xs font-semibold text-white">
             Synchronized Telemetry Sample Log (Latest 8 Frames)
           </h3>
-          <span className="text-[11px] font-mono text-[#64748b]">
+          <span className="text-[11px] font-mono text-[#dbeafe]">
             MIMIC-III · GOES/CRaTER · OSD-195
           </span>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-white">
           <table className="w-full text-left border-collapse text-xs font-mono">
             <thead>
-              <tr className="bg-[#0b1018] border-b border-[#1d2636] text-[#94a3b8]">
+              <tr className="bg-[#dce5f0] border-b border-[#9cb0c9] text-[#0f2942]">
                 <th className="py-2 px-3">MET (s)</th>
                 <th className="py-2 px-3">EMA SpO2</th>
                 <th className="py-2 px-3">EMA HR</th>
@@ -670,22 +745,22 @@ export function TelemetryCharts({ snapshot }: TelemetryChartsProps) {
             </thead>
             <tbody>
               {recentRows.map((row) => (
-                <tr key={row.tick} className="border-b border-[#141c28] hover:bg-[#111824]">
-                  <td className="py-1.5 px-3 text-[#f8fafc]">T+{row.timestamp.toFixed(0)}</td>
-                  <td className={`py-1.5 px-3 font-semibold ${row.ema_spo2 < 90 ? 'text-[#ef4444]' : 'text-[#34d399]'}`}>
+                <tr key={row.tick} className="border-b border-[#cbd5e1] hover:bg-[#eff6ff]">
+                  <td className="py-1.5 px-3 text-[#0f172a] font-semibold">T+{row.timestamp.toFixed(0)}</td>
+                  <td className={`py-1.5 px-3 font-bold ${row.ema_spo2 < 90 ? 'text-[#dc2626]' : 'text-[#15803d]'}`}>
                     {row.ema_spo2.toFixed(1)}%
                   </td>
-                  <td className="py-1.5 px-3 text-[#e2e8f0]">{row.ema_hr.toFixed(1)}</td>
-                  <td className="py-1.5 px-3 text-[#94a3b8]">
+                  <td className="py-1.5 px-3 text-[#0f172a]">{row.ema_hr.toFixed(1)}</td>
+                  <td className="py-1.5 px-3 text-[#475569]">
                     {row.systolic_bp ?? 118}/{row.diastolic_bp ?? 76}
                   </td>
-                  <td className="py-1.5 px-3 text-[#38bdf8]">{row.proton_flux.toFixed(2)}</td>
-                  <td className={`py-1.5 px-3 ${row.radiation_slope > 1.5 ? 'text-[#f59e0b] font-semibold' : 'text-[#94a3b8]'}`}>
+                  <td className="py-1.5 px-3 text-[#0b3d91] font-semibold">{row.proton_flux.toFixed(2)}</td>
+                  <td className={`py-1.5 px-3 ${row.radiation_slope > 1.5 ? 'text-[#b45309] font-bold' : 'text-[#475569]'}`}>
                     {row.radiation_slope.toFixed(3)}
                   </td>
-                  <td className="py-1.5 px-3 text-[#94a3b8]">{row.blood_sugar_mg_dl}</td>
-                  <td className="py-1.5 px-3 text-[#94a3b8]">{row.body_temp_c.toFixed(1)}°C</td>
-                  <td className="py-1.5 px-3 text-[#94a3b8]">{row.mental_stress_index.toFixed(1)}</td>
+                  <td className="py-1.5 px-3 text-[#334155]">{row.blood_sugar_mg_dl}</td>
+                  <td className="py-1.5 px-3 text-[#334155]">{row.body_temp_c.toFixed(1)}°C</td>
+                  <td className="py-1.5 px-3 text-[#334155]">{row.mental_stress_index.toFixed(1)}</td>
                 </tr>
               ))}
             </tbody>
