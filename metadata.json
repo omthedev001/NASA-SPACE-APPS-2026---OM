@@ -1,0 +1,6 @@
+{
+  "name": "AstroHealth Edge OS",
+  "description": "Offline-capable autonomous digital flight surgeon and mental-physical Digital Twin for deep-space astronauts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

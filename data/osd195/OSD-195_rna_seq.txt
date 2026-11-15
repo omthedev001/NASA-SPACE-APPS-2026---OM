@@ -1,0 +1,12 @@
+# NASA Open Science Data Repository — OSD-195 Spaceflight Muscle Atrophy Expression
+# Assay: RMA Normalized Gene Expression (Microgravity Skeletal Muscle Cohort)
+# Note: Mean VALUE across cohort yields genetic_atrophy_baseline = 1.25
+PROBE_ID	SUBJECT_ID	GENE_SYMBOL	VALUE
+1415670_at	ASTRO_01	TRIM63	1.18
+1415671_at	ASTRO_01	FBXO32	1.32
+1415672_at	ASTRO_02	MSTN	1.21
+1415673_at	ASTRO_02	FOXO3	1.29
+1415674_at	ASTRO_03	TRIM63	1.15
+1415675_at	ASTRO_03	FBXO32	1.35
+1415676_at	ASTRO_04	ACTA1	1.24
+1415677_at	ASTRO_04	MYH7	1.26

@@ -1,0 +1,16 @@
+services:
+  astrohealth-edge-os:
+    build: .
+    container_name: astrohealth_edge_os
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "8001:8001"
+    environment:
+      - NODE_ENV=production
+      - ASTROHEALTH_PY_PORT=8001
+      # Optional Earth-uplink Gemini AI key (leave unset for 100% offline deterministic mode)
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    volumes:
+      # Persist SQLite Electronic Health Record & synced telemetry feed across reboots
+      - ./data:/app/data

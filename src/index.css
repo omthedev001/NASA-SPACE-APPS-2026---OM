@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: "Bahnschrift", "DIN Alternate", "Franklin Gothic Medium", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Mono", "Consolas", ui-monospace, monospace;
+  }
+
+  html,
+  body {
+    background-color: #06080d;
+    color: #e2e8f0;
+    font-family: var(--font-sans);
+    letter-spacing: 0.01em;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  input,
+  select,
+  textarea {
+    color-scheme: dark;
+  }
+}
+
+/* SpaceX Flight-Deck Surface System — Flat Matte Precision, Zero Circles */
+.sx-panel {
+  background-color: #0c1017;
+  border: 1px solid #1d2636;
+}
+
+.sx-panel-header {
+  background-color: #101621;
+  border-bottom: 1px solid #1d2636;
+  color: #f1f5f9;
+}
+
+.sx-cell {
+  background-color: #080b11;
+  border: 1px solid #1a2333;
+}
+
+.sx-input {
+  background-color: #070a10;
+  border: 1px solid #263347;
+  color: #f8fafc;
+}
+
+.sx-input:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+.sx-btn {
+  background-color: #121925;
+  border: 1px solid #28364c;
+  color: #e2e8f0;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.sx-btn:hover:not(:disabled) {
+  background-color: #192334;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+.sx-btn-primary {
+  background-color: #0369a1;
+  border: 1px solid #0ea5e9;
+  color: #ffffff;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.sx-btn-primary:hover:not(:disabled) {
+  background-color: #0284c7;
+  border-color: #38bdf8;
+}
+
+/* Rectangular Range Slider — Zero Circles */
+input[type="range"].square-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+input[type="range"].square-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 16px;
+  background: #38bdf8;
+  border: 1px solid #0f172a;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+input[type="range"].square-slider::-moz-range-thumb {
+  width: 10px;
+  height: 16px;
+  background: #38bdf8;
+  border: 1px solid #0f172a;
+  border-radius: 0;
+  cursor: pointer;
+}

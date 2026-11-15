@@ -1,0 +1,5 @@
+ROW_ID,ITEMID,LABEL,FLUID,CATEGORY,LOINC_CODE
+1,50818,Heart Rate,Blood,Blood Gas,8867-4
+2,50821,Oxygen Saturation,Blood,Blood Gas,2708-6
+3,50813,Lactate,Blood,Blood Gas,32693-4
+4,50912,Creatinine,Blood,Chemistry,2160-0
